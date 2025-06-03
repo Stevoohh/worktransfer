@@ -1,0 +1,63 @@
+<div class="filter-container">
+  <div class="filter-row">
+    <mat-form-field>
+      <mat-label>Jobname</mat-label>
+      <input matInput [(ngModel)]="jobname">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Prozedur</mat-label>
+      <input matInput [(ngModel)]="prozedur">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Aufrufer</mat-label>
+      <input matInput [(ngModel)]="aufrufer">
+    </mat-form-field>
+  </div>
+
+  <div class="filter-row">
+    <mat-form-field>
+      <mat-label>Mandat</mat-label>
+      <input matInput [(ngModel)]="mandat">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ablaufserver</mat-label>
+      <input matInput [(ngModel)]="ablaufserver">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status der Datensätze</mat-label>
+      <mat-select [(ngModel)]="status">
+        <mat-option [value]="null">Alle</mat-option>
+        <mat-option *ngFor="let status of statusOptions" [value]="status">
+          {{status}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="filter-row">
+    <mat-form-field>
+      <mat-label>Gestartet</mat-label>
+      <input matInput [matDatepicker]="gestartetPicker" [(ngModel)]="gestartet">
+      <mat-datepicker-toggle matSuffix [for]="gestartetPicker"></mat-datepicker-toggle>
+      <mat-datepicker #gestartetPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Beendet</mat-label>
+      <input matInput [matDatepicker]="beendetPicker" [(ngModel)]="beendet">
+      <mat-datepicker-toggle matSuffix [for]="beendetPicker"></mat-datepicker-toggle>
+      <mat-datepicker #beendetPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Aktiv</mat-label>
+      <input matInput [matDatepicker]="aktivPicker" [(ngModel)]="aktiv">
+      <mat-datepicker-toggle matSuffix [for]="aktivPicker"></mat-datepicker-toggle>
+      <mat-datepicker #aktivPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div> 

@@ -1,0 +1,47 @@
+<div class="tab-container">
+  <app-protokolle-filter></app-protokolle-filter>
+  
+  <mat-tab-group [selectedIndex]="getSelectedIndex()" (selectedIndexChange)="setActiveTab(tabs[$event].id)">
+    <mat-tab *ngFor="let tab of tabs" [label]="tab.label">
+      <ng-template mat-tab-label>
+        {{tab.label}}
+        <button mat-icon-button class="close-button" *ngIf="tab.id !== 'protokolle'" (click)="removeTab(tab.id); $event.stopPropagation()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </ng-template>
+      
+      <div class="content-header">
+        <div class="search-container">
+          <mat-form-field class="search-field">
+            <mat-label>Suche</mat-label>
+            <input matInput [(ngModel)]="tab.searchText" (keyup)="filterContent(tab)">
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-hint *ngIf="tab.matches > 0">{{tab.currentMatch}} von {{tab.matches}} Treffern</mat-hint>
+          </mat-form-field>
+          
+          <div class="search-controls" *ngIf="tab.matches > 0">
+            <button mat-icon-button (click)="navigateMatch(tab, 'prev')" title="Vorheriger Treffer">
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <button mat-icon-button (click)="navigateMatch(tab, 'next')" title="Nächster Treffer">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <button mat-icon-button (click)="highlightAllMatches(tab)" title="Alle Treffer markieren">
+              <mat-icon>format_highlight</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="exportContent(tab)">
+          <mat-icon>download</mat-icon>
+          Exportieren
+        </button>
+      </div>
+      <div class="content-body" [innerHTML]="tab.filteredContent | safeHtml"></div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <button mat-fab color="primary" class="add-tab-button" (click)="addNewTab()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

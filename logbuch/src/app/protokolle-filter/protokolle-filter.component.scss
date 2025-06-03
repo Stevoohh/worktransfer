@@ -1,0 +1,21 @@
+.filter-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 0px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  mat-form-field {
+    flex: 1;
+    max-width: 300px;
+  }
+} 
