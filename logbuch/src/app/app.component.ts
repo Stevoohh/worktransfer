@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { ProtokolleFilterComponent } from './protokolle-filter/protokolle-filter.component';
+import { TabRouterLinksComponent } from './tab-router-links/tab-router-links.component';
 
 interface Tab {
   id: string;
@@ -34,7 +35,8 @@ interface Tab {
     MatInputModule,
     FormsModule,
     SafeHtmlPipe,
-    ProtokolleFilterComponent
+    ProtokolleFilterComponent,
+    TabRouterLinksComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

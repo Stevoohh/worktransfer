@@ -1,0 +1,19 @@
+<nav mat-tab-nav-bar [backgroundColor]="'primary'" [tabPanel]="tabPanel">
+  <a mat-tab-link
+     *ngFor="let link of links"
+     [routerLink]="link.link"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive"
+     (click)="activeLinkIndex = link.index">
+    {{link.label}}
+    <button mat-icon-button
+            *ngIf="link.removable"
+            (click)="removeTab(link.index); $event.stopPropagation()"
+            class="remove-tab-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </a>
+</nav>
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel> 
