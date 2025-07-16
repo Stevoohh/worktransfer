@@ -27,7 +27,7 @@ interface ExampleData {
     ScrollingModule
   ],
   template: `  
-    <h2>MatDataGrid 123</h2>
+    <h2>MatDataGrid 1234</h2>
     <cdk-virtual-scroll-viewport itemSize="48" class="viewport" (scrolledIndexChange)="onScroll()">
       <table mat-table [dataSource]="data" matSort>
         <!-- Icon Column -->
