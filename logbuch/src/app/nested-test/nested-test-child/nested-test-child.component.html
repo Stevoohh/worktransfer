@@ -1,4 +1,18 @@
 <div class="child-container">
   <h2>Child Component</h2>
   <p>Current ID: {{id}}</p>
+
+  <div *ngIf="loading" class="loading">
+    <p>Lade Daten...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{error}}</p>
+  </div>
+
+  <div *ngIf="testData && !loading" class="test-data">
+    <h3>{{testData.title}}</h3>
+    <p class="body">{{testData.body}}</p>
+    <p class="meta">User ID: {{testData.userId}}</p>
+  </div>
 </div> 

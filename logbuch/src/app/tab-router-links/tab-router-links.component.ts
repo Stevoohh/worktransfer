@@ -3,7 +3,7 @@ import { Router, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { filter } from 'rxjs/operators';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 
 interface TabLink {
   label: string;
@@ -18,6 +18,7 @@ interface TabLink {
   styleUrls: ['./tab-router-links.component.scss'],
   standalone: true,
   imports: [
+    CommonModule,
     MatTabsModule,
     MatIconModule,
     RouterLink,
@@ -31,6 +32,7 @@ export class TabRouterLinksComponent implements OnInit {
     { label: 'Protokolle', link: '/protokolle', index: 0, removable: false }
   ];
   activeLinkIndex = 0;
+  private removedRoutes = new Set<string>();
 
   constructor(private router: Router) {}
 
@@ -39,7 +41,9 @@ export class TabRouterLinksComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const url = event.urlAfterRedirects;
-      if (url !== '/protokolle' && !this.links.some(link => link.link === url)) {
+      if (url !== '/protokolle' && 
+          !this.links.some(link => link.link === url) && 
+          !this.removedRoutes.has(url)) {
         this.addTab(url);
       }
       this.activeLinkIndex = this.links.findIndex(link => link.link === url);
@@ -59,6 +63,8 @@ export class TabRouterLinksComponent implements OnInit {
 
   removeTab(index: number) {
     if (this.links[index].removable) {
+      const removedLink = this.links[index];
+      this.removedRoutes.add(removedLink.link);
       this.links.splice(index, 1);
       if (this.activeLinkIndex === index) {
         this.router.navigate(['/protokolle']);

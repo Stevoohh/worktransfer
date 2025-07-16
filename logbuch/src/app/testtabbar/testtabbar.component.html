@@ -1,0 +1,17 @@
+<nav mat-tab-nav-bar>
+  <a
+    mat-tab-link
+    *ngFor="let tab of tabs"
+    [routerLink]="['/tab', tab.id]"
+    [active]="activeLink === '/tab/' + tab.id"
+  >
+    {{ tab.label }}
+    <button mat-icon-button (click)="removeTab(tab.id, $event)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </a>
+  <button mat-raised-button color="primary" (click)="addTab()">+</button>
+</nav>
+
+<!-- hier wird die Komponente dynamisch geroutet -->
+<router-outlet></router-outlet>

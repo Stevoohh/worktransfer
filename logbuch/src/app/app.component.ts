@@ -11,6 +11,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { ProtokolleFilterComponent } from './protokolle-filter/protokolle-filter.component';
 import { TabRouterLinksComponent } from './tab-router-links/tab-router-links.component';
+import { TesttabbarComponent } from './testtabbar/testtabbar.component';
 
 interface Tab {
   id: string;
@@ -36,7 +37,8 @@ interface Tab {
     FormsModule,
     SafeHtmlPipe,
     ProtokolleFilterComponent,
-    TabRouterLinksComponent
+    TabRouterLinksComponent,
+    TesttabbarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
