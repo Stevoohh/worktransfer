@@ -1,0 +1,23 @@
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  @for (tab of tabs; track tab) {
+  <a
+    mat-tab-link
+    [routerLink]="tab.route"
+    [active]="activeRoute === tab.route"
+  >
+  {{tab.label}}
+    <button
+      *ngIf="tab.removable"
+      mat-icon-button
+      (click)="closeTab(tab, $event)"
+      style="margin-left: 8px;"
+      aria-label="Tab schließen"
+      tabindex="-1"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </a>
+}
+</nav>
+<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
+
