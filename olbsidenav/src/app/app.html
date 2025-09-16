@@ -2,11 +2,12 @@
   <div class="global-banner__content">
     <div class="banner-left">
       <button class="icon-btn" (click)="toggleMenuPlacement()" aria-label="Ansicht umschalten">
-        <mat-icon>{{ showMenuInBanner() ? 'more_vert' : 'more_horiz' }}</mat-icon>
+        <mat-icon>{{ showMenuInBanner() ? 'reorder' : 'reorder' }}</mat-icon>
       </button>
       <div class="logo" aria-label="Logo">
         <img [src]="logoUrl" alt="Logo" />
       </div>
+      <span class="app-title">Demo</span>
     </div>
 
     <div class="banner-center">
@@ -18,44 +19,50 @@
           <div class="banner-menu-viewport" #bannerMenuViewport (scroll)="onBannerMenuScroll()">
             <div class="banner-menu">
               <ng-container *ngFor="let item of menu()">
-                <ng-container *ngIf="!item.children?.length; else parentButton">
-                  <button class="banner-item" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
-                    <mat-icon>{{ item.icon }}</mat-icon>
-                    <span>{{ item.label }}</span>
-                  </button>
-                </ng-container>
-                <ng-template #parentButton>
-                  <button class="banner-item" [matMenuTriggerFor]="menuRef">
-                    <mat-icon>{{ item.icon }}</mat-icon>
-                    <span>{{ item.label }}</span>
-                    <mat-icon>expand_more</mat-icon>
-                  </button>
-                  <mat-menu #menuRef="matMenu">
-                    <ng-container *ngFor="let child of item.children">
-                      <ng-container *ngIf="!child.children?.length; else childHasChildren">
-                        <button mat-menu-item (click)="child.externalUrl ? openExternal(child) : navigateTo(child.route)">
-                          <mat-icon>{{ child.icon }}</mat-icon>
-                          <span>{{ child.label }}</span>
-                        </button>
+                <ng-container *ngIf="isItem(item)">
+                  <ng-container *ngIf="!item.children?.length; else parentButton">
+                    <button class="banner-item" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
+                      <mat-icon>{{ item.icon }}</mat-icon>
+                      <span>{{ item.label }}</span>
+                      <span class="badge" *ngIf="item.badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+                    </button>
+                  </ng-container>
+                  <ng-template #parentButton>
+                    <button class="banner-item" [matMenuTriggerFor]="menuRef">
+                      <mat-icon>{{ item.icon }}</mat-icon>
+                      <span>{{ item.label }}</span>
+                      <span class="badge" *ngIf="item.badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+                      <mat-icon>expand_more</mat-icon>
+                    </button>
+                    <mat-menu #menuRef="matMenu">
+                      <ng-container *ngFor="let child of item.children">
+                        <ng-container *ngIf="!child.children?.length; else childHasChildren">
+                          <button mat-menu-item (click)="child.externalUrl ? openExternal(child) : navigateTo(child.route)">
+                            <mat-icon>{{ child.icon }}</mat-icon>
+                            <span>{{ child.label }}</span>
+                            <span class="badge" *ngIf="child.badge" [class]="'badge ' + (child.badgeVariant || 'neutral')">{{ child.badge }}</span>
+                          </button>
+                        </ng-container>
+                        <ng-template #childHasChildren>
+                          <button mat-menu-item [matMenuTriggerFor]="subMenuRef">
+                            <mat-icon>{{ child.icon }}</mat-icon>
+                            <span>{{ child.label }}</span>
+                            <mat-icon>chevron_right</mat-icon>
+                          </button>
+                          <mat-menu #subMenuRef="matMenu">
+                            <ng-container *ngFor="let sub of child.children">
+                              <button mat-menu-item (click)="sub.externalUrl ? openExternal(sub) : navigateTo(sub.route)">
+                                <mat-icon>{{ sub.icon }}</mat-icon>
+                                <span>{{ sub.label }}</span>
+                                <span class="badge" *ngIf="sub.badge" [class]="'badge ' + (sub.badgeVariant || 'neutral')">{{ sub.badge }}</span>
+                              </button>
+                            </ng-container>
+                          </mat-menu>
+                        </ng-template>
                       </ng-container>
-                      <ng-template #childHasChildren>
-                        <button mat-menu-item [matMenuTriggerFor]="subMenuRef">
-                          <mat-icon>{{ child.icon }}</mat-icon>
-                          <span>{{ child.label }}</span>
-                          <mat-icon>chevron_right</mat-icon>
-                        </button>
-                        <mat-menu #subMenuRef="matMenu">
-                          <ng-container *ngFor="let sub of child.children">
-                            <button mat-menu-item (click)="sub.externalUrl ? openExternal(sub) : navigateTo(sub.route)">
-                              <mat-icon>{{ sub.icon }}</mat-icon>
-                              <span>{{ sub.label }}</span>
-                            </button>
-                          </ng-container>
-                        </mat-menu>
-                      </ng-template>
-                    </ng-container>
-                  </mat-menu>
-                </ng-template>
+                    </mat-menu>
+                  </ng-template>
+                </ng-container>
               </ng-container>
             </div>
           </div>
@@ -68,6 +75,8 @@
     </div>
 
     <div class="banner-right">
+      <span class="env-label">dev</span>
+      <span class="v-sep">|</span>
       <div class="user-texts">
         <span class="user-name">Steve Stolle</span>
         <span class="user-title">b18163</span>
@@ -77,52 +86,57 @@
 </div>
 <mat-drawer-container class="shell" [autosize]="true">
   <mat-drawer class="nav" [class.collapsed]="!isExpanded()" mode="side" [opened]="true" [autoFocus]="false" *ngIf="!showMenuInBanner()">
-    <div class="nav-header" (click)="toggle()">      
-      <mat-icon>{{ isExpanded() ? 'menu_open' : 'read_more' }}</mat-icon>
+    <div class="nav-header">      
+      <mat-icon (click)="toggle()">{{ isExpanded() ? 'menu_open' : 'read_more' }}</mat-icon>
       <span class="nav-title" *ngIf="isExpanded()">Menü</span>
     </div>
 
     <nav class="nav-content" [class.collapsed]="!isExpanded()">
       <ul class="menu">
         <ng-container *ngFor="let item of menu()">
-          <li class="menu-item" [class.active]="isActive(item)" [class.ancestor-active]="isAncestorActive(item)">
-            <div class="menu-row" [class.clickable]="item.children?.length" (click)="item.children?.length ? toggleNode(item) : (item.externalUrl ? openExternal(item) : null)" [routerLink]="!item.children?.length && item.route ? item.route : null">
-              <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
-              <span class="menu-label" *ngIf="isExpanded()">{{ item.label }}</span>
-              <span class="spacer"></span>
-              <mat-icon *ngIf="item.children?.length && isExpanded()">{{ item.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-            </div>
+          <li *ngIf="isHeading(item); else regularItem" class="menu-heading">{{ item.heading }}</li>
+          <ng-template #regularItem>
+            <li class="menu-item" *ngIf="isItem(item)" [class.active]="isActive(item)" [class.ancestor-active]="isAncestorActive(item)">
+              <div class="menu-row" [class.clickable]="item.children?.length" (click)="item.children?.length ? toggleNode(item) : (item.externalUrl ? openExternal(item) : null)" [routerLink]="!item.children?.length && item.route ? item.route : null">
+                <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+                <span class="menu-label" *ngIf="isExpanded()">{{ item.label }}</span>
+                <span class="spacer"></span>
+                <span class="badge" *ngIf="item.badge && isExpanded()" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+                <mat-icon *ngIf="item.children?.length && isExpanded()">{{ item.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </div>
 
-            <ul class="submenu" *ngIf="item.children?.length && item.expanded">
-              <ng-container *ngFor="let child of item.children">
-                <li class="menu-item" [class.active]="isActive(child)" [class.ancestor-active]="isAncestorActive(child)">
-                  <div class="menu-row" [class.clickable]="child.children?.length" (click)="child.children?.length ? toggleNode(child) : (child.externalUrl ? openExternal(child) : null)" [routerLink]="!child.children?.length && child.route ? child.route : null">
-                    <mat-icon class="menu-icon">{{ child.icon }}</mat-icon>
-                    <span class="menu-label" *ngIf="isExpanded()">{{ child.label }}</span>
-                    <span class="spacer"></span>
-                    <mat-icon *ngIf="child.children?.length && isExpanded()">{{ child.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-                  </div>
+              <ul class="submenu" *ngIf="item.children?.length && item.expanded">
+                <ng-container *ngFor="let child of item.children">
+                  <li class="menu-item" [class.active]="isActive(child)" [class.ancestor-active]="isAncestorActive(child)">
+                    <div class="menu-row" [class.clickable]="child.children?.length" (click)="child.children?.length ? toggleNode(child) : (child.externalUrl ? openExternal(child) : null)" [routerLink]="!child.children?.length && child.route ? child.route : null">
+                      <mat-icon class="menu-icon">{{ child.icon }}</mat-icon>
+                      <span class="menu-label" *ngIf="isExpanded()">{{ child.label }}</span>
+                      <span class="spacer"></span>
+                      <span class="badge" *ngIf="child.badge && isExpanded()" [class]="'badge ' + (child.badgeVariant || 'neutral')">{{ child.badge }}</span>
+                      <mat-icon *ngIf="child.children?.length && isExpanded()">{{ child.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </div>
 
-                  <ul class="submenu" *ngIf="child.children?.length && child.expanded">
-                    <li class="menu-item" *ngFor="let sub of child.children" [class.active]="isActive(sub)" [class.ancestor-active]="isAncestorActive(sub)">
-                      <div class="menu-row" [routerLink]="sub.route || null">
-                        <mat-icon class="menu-icon">{{ sub.icon }}</mat-icon>
-                        <span class="menu-label" *ngIf="isExpanded()">{{ sub.label }}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-              </ng-container>
-            </ul>
-          </li>
+                    <ul class="submenu" *ngIf="child.children?.length && child.expanded">
+                      <li class="menu-item" *ngFor="let sub of child.children" [class.active]="isActive(sub)" [class.ancestor-active]="isAncestorActive(sub)">
+                        <div class="menu-row" [routerLink]="sub.route || null">
+                          <mat-icon class="menu-icon">{{ sub.icon }}</mat-icon>
+                          <span class="menu-label" *ngIf="isExpanded()">{{ sub.label }}</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ng-container>
+              </ul>
+            </li>
+          </ng-template>
         </ng-container>
       </ul>
     </nav>
 
     <div class="nav-footer">
-      <div class="nav-footer-version">
+      <div class="nav-footer-version" *ngIf="isExpanded()">
         <span>Version: 14.01 </span>
-        <span>Base 12.0.1</span>
+        <span>AngularBase: 12.0.1</span>
       </div>
     </div>    
   </mat-drawer>

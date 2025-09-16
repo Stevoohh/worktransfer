@@ -7,6 +7,19 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgFor, NgIf } from '@angular/common';
 
+// Menu types
+export type MenuHeading = { heading: string };
+export type MenuItem = {
+  icon: string;
+  label: string;
+  route?: string;
+  externalUrl?: string;
+  expanded?: boolean;
+  badge?: string;
+  badgeVariant?: 'neutral' | 'info' | 'success' | 'warn';
+  children?: MenuItem[];
+};
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, MatSidenavModule, MatIconModule, MatListModule, MatTreeModule, MatMenuModule, NgFor, NgIf],
@@ -27,18 +40,22 @@ export class App {
   protected readonly canScrollLeft = signal<boolean>(false);
   protected readonly canScrollRight = signal<boolean>(false);
 
-  protected readonly menu = signal<{
-    icon: string;
-    label: string;
-    route?: string;
-    externalUrl?: string;
-    expanded?: boolean;
-    children?: { icon: string; label: string; route?: string; externalUrl?: string; expanded?: boolean; children?: any[] }[];
-  }[]>([
+  readonly menu = signal<Array<MenuHeading | MenuItem>>([
+    { heading: 'MENU' },
     {
       icon: 'dashboard',
-      label: 'Dashboard',
-      route: '/dashboard'
+      label: 'Dashboards',
+      route: '/dashboard',
+      badge: '5',
+      badgeVariant: 'success'
+    },
+    { heading: 'APPS' },
+    {
+      icon: 'mail',
+      label: 'Email',
+      route: '/email',
+      badge: 'New',
+      badgeVariant: 'info'
     },
     {
       icon: 'folder',
@@ -46,20 +63,20 @@ export class App {
       expanded: true,
       children: [
         { icon: 'assignment', label: 'Projekt A', route: '/projekte/a' },
-        { icon: 'assignment', label: 'Projekt B', expanded: true, children: [{ icon: 'description', label: 'Berichte', route: '/projekte/b/berichte' }], route: '/projekte/b' }
+        { icon: 'assignment', label: 'Projekt B', route: '/projekte/b', badge: 'soon', badgeVariant: 'neutral' },
       ]
     },
     { icon: 'settings', label: 'Einstellungen', route: '/einstellungen' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },    
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' }
   ]);
+
+  protected isHeading(item: any): item is { heading: string } {
+    return !!item && typeof (item as any).heading === 'string';
+  }
+
+  protected isItem(item: any): item is MenuItem {
+    return !!item && typeof (item as any).heading !== 'string';
+  }
 
   protected toggleNode(node: any): void {
     if (!node.children?.length) {
@@ -68,11 +85,11 @@ export class App {
     if (!this.isExpanded()) {
       this.isExpanded.set(true);
       node.expanded = true;
-      this.menu.update((m) => [...m]);
+      this.menu.update((m: Array<MenuHeading | MenuItem>) => [...m]);
       return;
     }
     node.expanded = !node.expanded;
-    this.menu.update((m) => [...m]);
+    this.menu.update((m: Array<MenuHeading | MenuItem>) => [...m]);
   }
 
   protected openExternal(node: any): void {
