@@ -1,5 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -9,7 +9,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatSidenavModule, MatIconModule, MatListModule, MatTreeModule, MatMenuModule, NgFor, NgIf],
+  imports: [RouterOutlet, RouterLink, MatSidenavModule, MatIconModule, MatListModule, MatTreeModule, MatMenuModule, NgFor, NgIf],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -22,6 +22,10 @@ export class App {
 
   private readonly router = inject(Router);
   protected readonly currentUrl = signal<string>('');
+
+  @ViewChild('bannerMenuViewport') bannerMenuViewport?: ElementRef<HTMLDivElement>;
+  protected readonly canScrollLeft = signal<boolean>(false);
+  protected readonly canScrollRight = signal<boolean>(false);
 
   protected readonly menu = signal<{
     icon: string;
@@ -46,7 +50,15 @@ export class App {
       ]
     },
     { icon: 'settings', label: 'Einstellungen', route: '/einstellungen' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' }
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },    
   ]);
 
   protected toggleNode(node: any): void {
@@ -104,10 +116,36 @@ export class App {
 
   protected toggleMenuPlacement(): void {
     this.showMenuInBanner.update((v) => !v);
+    setTimeout(() => this.updateBannerMenuScrollState(), 0);
   }
 
   protected navigateTo(route: string | undefined): void {
     if (!route) return;
     this.router.navigateByUrl(route);
+  }
+
+  protected onBannerMenuScroll(): void {
+    this.updateBannerMenuScrollState();
+  }
+
+  protected scrollBannerMenu(direction: 1 | -1): void {
+    const viewport = this.bannerMenuViewport?.nativeElement;
+    if (!viewport) return;
+    const delta = Math.max(200, viewport.clientWidth * 0.6) * direction;
+    viewport.scrollBy({ left: delta, behavior: 'smooth' });
+    // Update state after the scroll animation
+    setTimeout(() => this.updateBannerMenuScrollState(), 300);
+  }
+
+  private updateBannerMenuScrollState(): void {
+    const viewport = this.bannerMenuViewport?.nativeElement;
+    if (!viewport) {
+      this.canScrollLeft.set(false);
+      this.canScrollRight.set(false);
+      return;
+    }
+    const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+    this.canScrollLeft.set(viewport.scrollLeft > 0);
+    this.canScrollRight.set(viewport.scrollLeft < maxScrollLeft - 1);
   }
 }

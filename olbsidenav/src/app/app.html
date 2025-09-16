@@ -11,47 +11,57 @@
 
     <div class="banner-center">
       <ng-container *ngIf="showMenuInBanner(); else emptyCenter">
-        <div class="banner-menu">
-          <ng-container *ngFor="let item of menu()">
-            <ng-container *ngIf="!item.children?.length; else parentButton">
-              <button class="banner-item" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
-                <mat-icon>{{ item.icon }}</mat-icon>
-                <span>{{ item.label }}</span>
-              </button>
-            </ng-container>
-            <ng-template #parentButton>
-              <button class="banner-item" [matMenuTriggerFor]="menuRef">
-                <mat-icon>{{ item.icon }}</mat-icon>
-                <span>{{ item.label }}</span>
-                <mat-icon>expand_more</mat-icon>
-              </button>
-              <mat-menu #menuRef="matMenu">
-                <ng-container *ngFor="let child of item.children">
-                  <ng-container *ngIf="!child.children?.length; else childHasChildren">
-                    <button mat-menu-item (click)="child.externalUrl ? openExternal(child) : navigateTo(child.route)">
-                      <mat-icon>{{ child.icon }}</mat-icon>
-                      <span>{{ child.label }}</span>
-                    </button>
-                  </ng-container>
-                  <ng-template #childHasChildren>
-                    <button mat-menu-item [matMenuTriggerFor]="subMenuRef">
-                      <mat-icon>{{ child.icon }}</mat-icon>
-                      <span>{{ child.label }}</span>
-                      <mat-icon>chevron_right</mat-icon>
-                    </button>
-                    <mat-menu #subMenuRef="matMenu">
-                      <ng-container *ngFor="let sub of child.children">
-                        <button mat-menu-item (click)="sub.externalUrl ? openExternal(sub) : navigateTo(sub.route)">
-                          <mat-icon>{{ sub.icon }}</mat-icon>
-                          <span>{{ sub.label }}</span>
+        <div class="banner-menu-wrapper">
+          <button class="scroll-btn left" (click)="scrollBannerMenu(-1)" [class.hidden]="!canScrollLeft()" aria-label="Nach links scrollen">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <div class="banner-menu-viewport" #bannerMenuViewport (scroll)="onBannerMenuScroll()">
+            <div class="banner-menu">
+              <ng-container *ngFor="let item of menu()">
+                <ng-container *ngIf="!item.children?.length; else parentButton">
+                  <button class="banner-item" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    <span>{{ item.label }}</span>
+                  </button>
+                </ng-container>
+                <ng-template #parentButton>
+                  <button class="banner-item" [matMenuTriggerFor]="menuRef">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                    <span>{{ item.label }}</span>
+                    <mat-icon>expand_more</mat-icon>
+                  </button>
+                  <mat-menu #menuRef="matMenu">
+                    <ng-container *ngFor="let child of item.children">
+                      <ng-container *ngIf="!child.children?.length; else childHasChildren">
+                        <button mat-menu-item (click)="child.externalUrl ? openExternal(child) : navigateTo(child.route)">
+                          <mat-icon>{{ child.icon }}</mat-icon>
+                          <span>{{ child.label }}</span>
                         </button>
                       </ng-container>
-                    </mat-menu>
-                  </ng-template>
-                </ng-container>
-              </mat-menu>
-            </ng-template>
-          </ng-container>
+                      <ng-template #childHasChildren>
+                        <button mat-menu-item [matMenuTriggerFor]="subMenuRef">
+                          <mat-icon>{{ child.icon }}</mat-icon>
+                          <span>{{ child.label }}</span>
+                          <mat-icon>chevron_right</mat-icon>
+                        </button>
+                        <mat-menu #subMenuRef="matMenu">
+                          <ng-container *ngFor="let sub of child.children">
+                            <button mat-menu-item (click)="sub.externalUrl ? openExternal(sub) : navigateTo(sub.route)">
+                              <mat-icon>{{ sub.icon }}</mat-icon>
+                              <span>{{ sub.label }}</span>
+                            </button>
+                          </ng-container>
+                        </mat-menu>
+                      </ng-template>
+                    </ng-container>
+                  </mat-menu>
+                </ng-template>
+              </ng-container>
+            </div>
+          </div>
+          <button class="scroll-btn right" (click)="scrollBannerMenu(1)" [class.hidden]="!canScrollRight()" aria-label="Nach rechts scrollen">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
         </div>
       </ng-container>
       <ng-template #emptyCenter></ng-template>
@@ -110,20 +120,14 @@
     </nav>
 
     <div class="nav-footer">
-      <button class="icon-btn" (click)="toggleMenuPlacement()" aria-label="Menü in Banner umschalten">
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-    </div>
+      <div class="nav-footer-version">
+        <span>Version: 14.01 </span>
+        <span>Base 12.0.1</span>
+      </div>
+    </div>    
   </mat-drawer>
 
-  <div class="content" *ngIf="!showMenuInBanner(); else contentWithBannerMenu">
-    <!-- <header class="topbar">
-      <button class="icon-btn" (click)="toggle()" aria-label="Toggle sidenav">
-        <mat-icon>{{ isExpanded() ? 'menu_open' : 'read_more' }}</mat-icon>
-      </button>
-      <h1>{{ title() }}</h1>
-    </header> -->
-
+  <div class="content">
     <section class="page">
       <h2>Beispielinhalt</h2>
       <p>
@@ -132,25 +136,6 @@
       </p>
       <router-outlet />
     </section>
-  </div>
-  <ng-template #contentWithBannerMenu>
-    <div class="content">
-      <!-- <header class="topbar">
-        <button class="icon-btn" (click)="toggle()" aria-label="Toggle sidenav">
-          <mat-icon>{{ isExpanded() ? 'menu_open' : 'read_more' }}</mat-icon>
-        </button>
-        <h1>{{ title() }}</h1>
-      </header> -->
-
-      <section class="page">
-        <h2>Beispielinhalt</h2>
-        <p>
-          Dies ist ein Beispielinhalt. Rechts ist der Content-Bereich, links die einklappbare Material
-          Sidenav mit Icons im kompakten Zustand und Icons + Text im erweiterten Zustand.
-        </p>
-        <router-outlet />
-      </section>
-    </div>
-  </ng-template>
+  </div>  
 </mat-drawer-container>
 

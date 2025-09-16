@@ -1,12 +1,14 @@
 .shell {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: calc(100vh - 64px);
 }
 
 .global-banner {
   width: 100%;
   background: linear-gradient(90deg, #e3f2fd, #f5faff);
   border-bottom: 1px solid rgba(0,0,0,0.08);
+  height: 64px;
+  box-sizing: border-box;
 }
 
 .global-banner__content {
@@ -26,6 +28,37 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+
+/* Horizontal scrollable banner menu when placed in banner */
+.banner-menu-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-menu-viewport {
+  position: relative;
+  overflow: hidden; //overflow: auto hidden; für den Fall das die Scrollbar angezeigt werden soll
+  -webkit-overflow-scrolling: touch;
+}
+
+.banner-menu-viewport .banner-menu {
+  flex-wrap: nowrap;
+}
+
+.scroll-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  cursor: pointer;
+}
+.scroll-btn.hidden { visibility: hidden; }
 
 .banner-item {
   display: inline-flex;
@@ -81,13 +114,20 @@
 .nav {
   width: 280px;
   border-right: 1px solid rgba(0,0,0,0.08);
-  padding: 8px 0;
+  padding: 8px 0 0; /* no bottom padding to allow footer flush bottom */
   transition: width 200ms ease;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .nav.collapsed {
   width: 72px;
+}
+.nav-content {
+  flex: 1 1 auto;
+  overflow: auto;
 }
 
 .nav-header {
@@ -129,8 +169,6 @@
 .menu-row:hover {
   background: rgba(0,0,0,0.04);
 }
-
-
 
 .spacer {
   flex: 1 1 auto;
@@ -178,7 +216,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
   width: 100%;
   overflow: hidden;
 }
@@ -209,12 +247,24 @@
 }
 
 .nav-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 8px;
+  position: static;
+  padding: 8px 8px 0; /* no bottom padding */
   display: flex;
   justify-content: center;
+  margin-top: auto;
+  margin-bottom: 0;
 }
 
+.nav-footer-version {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+}
+.nav-footer-version span:first-child {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.nav-footer-version span:last-child {
+  font-weight: 600;
+}
