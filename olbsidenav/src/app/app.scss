@@ -277,6 +277,7 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  transition: margin-left 200ms ease, width 200ms ease;
 }
 
 .topbar {

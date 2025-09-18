@@ -1,11 +1,13 @@
 import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
-import { NgFor, NgIf } from '@angular/common';
+import { NavMenuComponent } from './components/nav-menu';
+import { NavTreeComponent } from './components/nav-tree';
+import { NgIf } from '@angular/common';
 
 // Menu types
 export type MenuHeading = { heading: string };
@@ -22,7 +24,7 @@ export type MenuItem = {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, MatSidenavModule, MatIconModule, MatListModule, MatTreeModule, MatMenuModule, NgFor, NgIf],
+  imports: [RouterOutlet, MatSidenavModule, MatIconModule, MatListModule, MatTreeModule, MatMenuModule, NgIf, NavMenuComponent, NavTreeComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
