@@ -5,44 +5,29 @@
 
 <nav class="nav-content" [class.collapsed]="!isExpanded()">
   <ul class="menu">
-    <ng-container *ngFor="let item of menu()">
-      <li *ngIf="isHeading(item); else regularItem" class="menu-heading">{{ item.heading }}</li>
-      <ng-template #regularItem>
-        <li class="menu-item" *ngIf="isItem(item)" [class.active]="isActive(item)" [class.ancestor-active]="isAncestorActive(item)">
-          <div class="menu-row" [class.clickable]="item.children?.length" (click)="item.children?.length ? toggleNode(item) : (item.externalUrl ? openExternal(item) : null)" [routerLink]="!item.children?.length && item.route ? item.route : null">
-            <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
-            <span class="menu-label" *ngIf="isExpanded()">{{ item.label }}</span>
+    <ng-container *ngTemplateOutlet="tree; context: { $implicit: menu() }"></ng-container>
+  </ul>
+
+  <ng-template #tree let-nodes>
+    <ng-container *ngFor="let node of nodes">
+      <li *ngIf="isHeading(node); else itemT" class="menu-heading">{{ node.heading }}</li>
+      <ng-template #itemT>
+        <li class="menu-item" [class.active]="isActive(node)" [class.ancestor-active]="isAncestorActive(node)">
+          <div class="menu-row" [class.clickable]="node.children?.length" (click)="onParentClick(node)" [routerLink]="!node.children?.length && node.route ? node.route : null">
+            <mat-icon class="menu-icon">{{ node.icon }}</mat-icon>
+            <span class="menu-label">{{ node.label }}</span>
             <span class="spacer"></span>
-            <span class="badge" *ngIf="item.badge && isExpanded()" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
-            <mat-icon *ngIf="item.children?.length && isExpanded()">{{ item.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+            <span class="badge" *ngIf="node.badge" [class]="'badge ' + (node.badgeVariant || 'neutral')">{{ node.badge }}</span>
+            <mat-icon *ngIf="node.children?.length && isExpanded()">{{ node.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
           </div>
 
-          <ul class="submenu" *ngIf="item.children?.length && item.expanded">
-            <ng-container *ngFor="let child of item.children">
-              <li class="menu-item" [class.active]="isActive(child)" [class.ancestor-active]="isAncestorActive(child)">
-                <div class="menu-row" [class.clickable]="child.children?.length" (click)="child.children?.length ? toggleNode(child) : (child.externalUrl ? openExternal(child) : null)" [routerLink]="!child.children?.length && child.route ? child.route : null">
-                  <mat-icon class="menu-icon">{{ child.icon }}</mat-icon>
-                  <span class="menu-label" *ngIf="isExpanded()">{{ child.label }}</span>
-                  <span class="spacer"></span>
-                  <span class="badge" *ngIf="child.badge && isExpanded()" [class]="'badge ' + (child.badgeVariant || 'neutral')">{{ child.badge }}</span>
-                  <mat-icon *ngIf="child.children?.length && isExpanded()">{{ child.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-                </div>
-
-                <ul class="submenu" *ngIf="child.children?.length && child.expanded">
-                  <li class="menu-item" *ngFor="let sub of child.children" [class.active]="isActive(sub)" [class.ancestor-active]="isAncestorActive(sub)">
-                    <div class="menu-row" [routerLink]="sub.route || null">
-                      <mat-icon class="menu-icon">{{ sub.icon }}</mat-icon>
-                      <span class="menu-label" *ngIf="isExpanded()">{{ sub.label }}</span>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-            </ng-container>
+          <ul class="submenu" *ngIf="node.children?.length && node.expanded && isExpanded()">
+            <ng-container *ngTemplateOutlet="tree; context: { $implicit: node.children }"></ng-container>
           </ul>
         </li>
       </ng-template>
     </ng-container>
-  </ul>
+  </ng-template>
 </nav>
 
 <div class="nav-footer">

@@ -133,7 +133,8 @@
 }
 
 .nav {
-  width: 280px;
+  width: max-content;
+  max-width: 80vw;
   border-right: 1px solid rgba(0,0,0,0.08);
   padding: 8px 0 0; /* no bottom padding to allow footer flush bottom */
   transition: width 200ms ease;
@@ -144,7 +145,12 @@
 }
 
 .nav.collapsed {
-  width: 72px;
+  width: 68px;
+}
+
+/* Ensure a sensible minimum only when expanded */
+.nav:not(.collapsed) {
+  min-width: 120px;
 }
 .nav-content {
   flex: 1 1 auto;
@@ -193,6 +199,7 @@
   padding: 8px 8px;
   border-radius: 0; /* background now applied on container for full-width */
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .menu-item:hover { background: rgba(0,0,0,0.04); }
@@ -262,6 +269,11 @@
 }
 
 .nav.collapsed .spacer {
+  display: none;
+}
+
+/* In collapsed state, do not reserve space for badges */
+.nav.collapsed .badge {
   display: none;
 }
 
