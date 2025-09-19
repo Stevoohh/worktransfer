@@ -66,12 +66,12 @@ export class App {
       children: [
         { icon: 'assignment', label: 'Projekt A1', route: '/projekte/a' },
         { icon: 'assignment', label: 'Projekt B1', route: '/projekte/b', badge: 'soon', badgeVariant: 'neutral', expanded: true, children: [
-          { icon: 'assignment', label: 'Projekt A2', route: '/projekte/a2' },
-          { icon: 'assignment', label: 'Projekt B2', route: '/projekte/b2', badge: 'soon', badgeVariant: 'neutral', expanded: true, children: [
-            { icon: 'assignment', label: 'Projekt A3', route: '/projekte/a3' },
-            { icon: 'assignment', label: 'Projekt B3', route: '/projekte/b3', badge: 'soon', badgeVariant: 'neutral' , children: [
-              { icon: 'assignment', label: 'Projekt A4', route: '/projekte/a4' },
-              { icon: 'assignment', label: 'Projekt B4', route: '/projekte/b4', badge: 'soon', badgeVariant: 'neutral' },
+          { icon: 'assignment', label: 'Projekt A2', route: '/projekte/a' },
+          { icon: 'assignment', label: 'Projekt B2', badge: 'soon', badgeVariant: 'neutral', expanded: true, children: [
+            { icon: 'assignment', label: 'Projekt A3', route: '/projekte/a' },
+            { icon: 'assignment', label: 'Projekt B3', route: '/projekte/b/berichte', badge: 'soon', badgeVariant: 'neutral' , children: [
+              { icon: 'assignment', label: 'Projekt A4', route: '/projekte/a' },
+              { icon: 'assignment', label: 'Projekt B4', route: '/projekte/b/berichte', badge: 'soon', badgeVariant: 'neutral' },
             ] },
           ] },
         ] },

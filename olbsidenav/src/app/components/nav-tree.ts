@@ -46,12 +46,28 @@ export class NavTreeComponent {
   protected onParentClick(node: any): void {
     if (node?.children?.length) {
       if (!this.isExpanded()) {
-        node.expanded = true;
+        // Open sidenav first, then toggle this node and navigate if route exists
         this.toggleRequested.emit();
+        node.expanded = !node.expanded;
+        if (node.route) {
+          this.router.navigateByUrl(node.route);
+        }
         return;
       }
+      // Sidenav is expanded: toggle node state and navigate if route exists
       this.toggleNode(node);
+      if (node.route) {
+        this.router.navigateByUrl(node.route);
+      }
       return;
+    }
+    // Leaf node
+    if (node?.externalUrl) {
+      this.openExternal(node);
+      return;
+    }
+    if (node?.route) {
+      this.router.navigateByUrl(node.route);
     }
   }
 
