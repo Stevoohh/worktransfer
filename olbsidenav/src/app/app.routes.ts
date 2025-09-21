@@ -25,8 +25,9 @@ export const routes: Routes = [
     ] },
     { path: 'b', component: ProjectBPage, children: [
       { path: 'b2', component: ProjectB2Page },
-      { path: 'b3', component: ProjectB3Page },
-      { path: 'b4', component: ProjectB4Page },
+      { path: 'b3', component: ProjectB3Page, children: [
+        { path: 'b4', component: ProjectB4Page },
+      ]  },
     ] },
     { path: 'b/berichte', component: ReportsPage },
   ] },

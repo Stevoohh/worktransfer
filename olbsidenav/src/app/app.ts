@@ -24,9 +24,19 @@ export type MenuItem = {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatSidenavModule, MatIconModule, MatListModule, MatTreeModule, MatMenuModule, NgIf, NavMenuComponent, NavTreeComponent],
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatTreeModule,
+    MatMenuModule,
+    NgIf,
+    NavMenuComponent,
+    NavTreeComponent,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('olbsidenav');
@@ -49,7 +59,7 @@ export class App {
       label: 'Dashboards',
       route: '/dashboard',
       // badge: '5',
-      badgeVariant: 'success'
+      badgeVariant: 'success',
     },
     { heading: 'APPS' },
     {
@@ -57,7 +67,7 @@ export class App {
       label: 'Email',
       route: '/email',
       // badge: 'New',
-      badgeVariant: 'info'
+      badgeVariant: 'info',
     },
     {
       icon: 'folder',
@@ -65,17 +75,45 @@ export class App {
       route: '/projekte',
       expanded: true,
       children: [
-        { icon: 'assignment', label: 'Projekt A1', route: '/projekte/a', children: [
-          { icon: 'assignment', label: 'Projekt A2', route: '/projekte/a/a2' },
-          { icon: 'assignment', label: 'Projekt A3', route: '/projekte/a/a3', badge: 'soon', badgeVariant: 'neutral'},
-        ]  },
-        { icon: 'assignment', label: 'Projekt B1', route: '/projekte/b', badge: 'soon', badgeVariant: 'neutral', expanded: true, children: [
-          { icon: 'assignment', label: 'Projekt B2', route: '/projekte/b/b2' },
-          { icon: 'assignment', label: 'Projekt B3', route: '/projekte/b/b3', badge: 'soon', badgeVariant: 'neutral'},
-        ] }, {icon: 'assignment', label: 'Projekt C', route: '/projekte/c'}]
+        {
+          icon: 'assignment',
+          label: 'Projekt A1',
+          route: '/projekte/a',
+          children: [
+            { icon: 'assignment', label: 'Projekt A2', route: '/projekte/a/a2' },
+            {
+              icon: 'assignment',
+              label: 'Projekt A3',
+              route: '/projekte/a/a3',
+              badge: 'soon',
+              badgeVariant: 'neutral',
+            },
+          ],
+        },
+        {
+          icon: 'assignment',
+          label: 'Projekt B1',
+          route: '/projekte/b',
+          badge: 'soon',
+          badgeVariant: 'neutral',
+          expanded: true,
+          children: [
+            { icon: 'assignment', label: 'Projekt B2', route: '/projekte/b/b2' },
+            {
+              icon: 'assignment',
+              label: 'Projekt B3',
+              route: '/projekte/b/b3',
+              badge: 'soon',
+              badgeVariant: 'neutral',
+              children: [{ icon: 'assignment', label: 'Projekt B4', route: '/projekte/b/b3/b4' }],
+            },
+          ],
+        },
+        { icon: 'assignment', label: 'Projekt C', route: '/projekte/c' },
+      ],
     },
     { icon: 'settings', label: 'Einstellungen', route: '/einstellungen' },
-    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' }
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
   ]);
 
   protected isHeading(item: any): item is { heading: string } {
