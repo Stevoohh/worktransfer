@@ -11,10 +11,9 @@
     </div>
 
     <div class="banner-center">
-      <ng-container *ngIf="showMenuInBanner(); else emptyCenter">
+      @if (showMenuInBanner()) {
         <nav-menu [menu]="menu()"></nav-menu>
-      </ng-container>
-      <ng-template #emptyCenter></ng-template>
+      }
     </div>
 
     <div class="banner-right">
@@ -28,9 +27,11 @@
   </div>
 </div>
   <mat-drawer-container class="shell" [autosize]="true">
-    <mat-drawer class="nav" [class.collapsed]="!isExpanded()" mode="side" [opened]="true" [autoFocus]="false" *ngIf="!showMenuInBanner()">
-      <nav-tree [menu]="menu()" [isExpanded]="isExpanded()" (toggleRequested)="toggle()"></nav-tree>
-    </mat-drawer>
+    @if (!showMenuInBanner()) {
+      <mat-drawer class="nav" [class.collapsed]="!isExpanded()" mode="side" [opened]="true" [autoFocus]="false">
+        <nav-tree [menu]="menu()" [isExpanded]="isExpanded()" (toggleRequested)="toggle()"></nav-tree>
+      </mat-drawer>
+    }
 
     <mat-drawer-content class="content">
     <section class="page">

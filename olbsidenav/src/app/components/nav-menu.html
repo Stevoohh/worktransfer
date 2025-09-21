@@ -4,52 +4,31 @@
   </button>
   <div class="banner-menu-viewport" #bannerMenuViewport (scroll)="onBannerMenuScroll()">
     <div class="banner-menu">
-      <ng-container *ngFor="let item of menu()">
-        <ng-container *ngIf="isItem(item)">
-          <ng-container *ngIf="!item.children?.length; else parentButton">
+      @for (item of menu(); track item.label) {
+        @if (isItem(item)) {
+          @if (!item.children?.length) {
             <button class="banner-item" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
               <mat-icon>{{ item.icon }}</mat-icon>
               <span>{{ item.label }}</span>
-              <span class="badge" *ngIf="item.badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+              @if (item.badge) {
+                <span class="badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+              }
             </button>
-          </ng-container>
-          <ng-template #parentButton>
+          } @else {
             <button class="banner-item" [matMenuTriggerFor]="menuRef">
               <mat-icon>{{ item.icon }}</mat-icon>
               <span>{{ item.label }}</span>
-              <span class="badge" *ngIf="item.badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+              @if (item.badge) {
+                <span class="badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+              }
               <mat-icon>expand_more</mat-icon>
             </button>
             <mat-menu #menuRef="matMenu">
-              <ng-container *ngFor="let child of item.children">
-                <ng-container *ngIf="!child.children?.length; else childHasChildren">
-                  <button mat-menu-item (click)="child.externalUrl ? openExternal(child) : navigateTo(child.route)">
-                    <mat-icon>{{ child.icon }}</mat-icon>
-                    <span>{{ child.label }}</span>
-                    <span class="badge" *ngIf="child.badge" [class]="'badge ' + (child.badgeVariant || 'neutral')">{{ child.badge }}</span>
-                  </button>
-                </ng-container>
-                <ng-template #childHasChildren>
-                  <button mat-menu-item [matMenuTriggerFor]="subMenuRef">
-                    <mat-icon>{{ child.icon }}</mat-icon>
-                    <span>{{ child.label }}</span>
-                    <mat-icon>chevron_right</mat-icon>
-                  </button>
-                  <mat-menu #subMenuRef="matMenu">
-                    <ng-container *ngFor="let sub of child.children">
-                      <button mat-menu-item (click)="sub.externalUrl ? openExternal(sub) : navigateTo(sub.route)">
-                        <mat-icon>{{ sub.icon }}</mat-icon>
-                        <span>{{ sub.label }}</span>
-                        <span class="badge" *ngIf="sub.badge" [class]="'badge ' + (sub.badgeVariant || 'neutral')">{{ sub.badge }}</span>
-                      </button>
-                    </ng-container>
-                  </mat-menu>
-                </ng-template>
-              </ng-container>
+              <nav-menu-child-item [items]="item.children"></nav-menu-child-item>
             </mat-menu>
-          </ng-template>
-        </ng-container>
-      </ng-container>
+          }
+        }
+      }
     </div>
   </div>
   <button class="scroll-btn right" (click)="scrollBannerMenu(1)" [class.hidden]="!canScrollRight()" aria-label="Nach rechts scrollen">

@@ -1,12 +1,11 @@
 import { Component, inject, signal, input, output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'nav-tree',
   standalone: true,
-  imports: [NgFor, NgIf, RouterLink, MatIconModule, NgTemplateOutlet],
+  imports: [RouterLink, MatIconModule],
   templateUrl: './nav-tree.html',
   styleUrls: ['../app.scss']
 })

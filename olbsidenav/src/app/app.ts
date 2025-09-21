@@ -7,7 +7,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavMenuComponent } from './components/nav-menu';
 import { NavTreeComponent } from './components/nav-tree';
-import { NgIf } from '@angular/common';
 
 // Menu types
 export type MenuHeading = { heading: string };
@@ -31,7 +30,6 @@ export type MenuItem = {
     MatListModule,
     MatTreeModule,
     MatMenuModule,
-    NgIf,
     NavMenuComponent,
     NavTreeComponent,
   ],
@@ -105,7 +103,23 @@ export class App {
               route: '/projekte/b/b3',
               badge: 'soon',
               badgeVariant: 'neutral',
-              children: [{ icon: 'assignment', label: 'Projekt B4', route: '/projekte/b/b3/b4' }],
+              children: [
+                { 
+                  icon: 'assignment', 
+                  label: 'Projekt B4', 
+                  route: '/projekte/b/b3/b4',
+                  children: [
+                    {
+                      icon: 'assignment',
+                      label: 'Projekt B5',
+                      route: '/projekte/b/b3/b4/b5',
+                      children: [
+                        { icon: 'assignment', label: 'Projekt B6', route: '/projekte/b/b3/b4/b5/b6' }
+                      ]
+                    }
+                  ]
+                }
+              ],
             },
           ],
         },

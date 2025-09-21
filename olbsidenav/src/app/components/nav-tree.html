@@ -1,40 +1,82 @@
 <div class="nav-header">
   <mat-icon (click)="onToggle()">{{ isExpanded() ? 'menu_open' : 'read_more' }}</mat-icon>
-  <span class="nav-title" *ngIf="isExpanded()">Menü</span>
+  @if (isExpanded()) {
+    <span class="nav-title">Menü</span>
+  }
 </div>
 
 <nav class="nav-content" [class.collapsed]="!isExpanded()">
   <ul class="menu">
-    <ng-container *ngTemplateOutlet="tree; context: { $implicit: menu() }"></ng-container>
-  </ul>
-
-  <ng-template #tree let-nodes>
-    <ng-container *ngFor="let node of nodes">
-      <li *ngIf="isHeading(node); else itemT" class="menu-heading">{{ node.heading }}</li>
-      <ng-template #itemT>
+    @for (node of menu(); track node.label || node.heading) {
+      @if (isHeading(node)) {
+        <li class="menu-heading">{{ node.heading }}</li>
+      } @else {
         <li class="menu-item" [class.active]="isActive(node)" [class.ancestor-active]="isAncestorActive(node)">
           <div class="menu-row" [class.clickable]="node.children?.length" (click)="onParentClick(node)" [routerLink]="!node.children?.length && node.route ? node.route : null">
             <mat-icon class="menu-icon">{{ node.icon }}</mat-icon>
             <span class="menu-label">{{ node.label }}</span>
             <span class="spacer"></span>
-            <span class="badge" *ngIf="node.badge" [class]="'badge ' + (node.badgeVariant || 'neutral')">{{ node.badge }}</span>
-            <mat-icon *ngIf="node.children?.length && isExpanded()">{{ node.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+            @if (node.badge) {
+              <span class="badge" [class]="'badge ' + (node.badgeVariant || 'neutral')">{{ node.badge }}</span>
+            }
+            @if (node.children?.length && isExpanded()) {
+              <mat-icon>{{ node.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+            }
           </div>
 
-          <ul class="submenu" *ngIf="node.children?.length && node.expanded && isExpanded()">
-            <ng-container *ngTemplateOutlet="tree; context: { $implicit: node.children }"></ng-container>
-          </ul>
+          @if (node.children?.length && node.expanded && isExpanded()) {
+            <ul class="submenu">
+              @for (child of node.children; track child.label) {
+                @if (isHeading(child)) {
+                  <li class="menu-heading">{{ child.heading }}</li>
+                } @else {
+                  <li class="menu-item" [class.active]="isActive(child)" [class.ancestor-active]="isAncestorActive(child)">
+                    <div class="menu-row" [class.clickable]="child.children?.length" (click)="onParentClick(child)" [routerLink]="!child.children?.length && child.route ? child.route : null">
+                      <mat-icon class="menu-icon">{{ child.icon }}</mat-icon>
+                      <span class="menu-label">{{ child.label }}</span>
+                      <span class="spacer"></span>
+                      @if (child.badge) {
+                        <span class="badge" [class]="'badge ' + (child.badgeVariant || 'neutral')">{{ child.badge }}</span>
+                      }
+                      @if (child.children?.length && isExpanded()) {
+                        <mat-icon>{{ child.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                      }
+                    </div>
+
+                    @if (child.children?.length && child.expanded && isExpanded()) {
+                      <ul class="submenu">
+                        @for (grandChild of child.children; track grandChild.label) {
+                          <li class="menu-item" [class.active]="isActive(grandChild)">
+                            <div class="menu-row" (click)="onParentClick(grandChild)" [routerLink]="grandChild.route">
+                              <mat-icon class="menu-icon">{{ grandChild.icon }}</mat-icon>
+                              <span class="menu-label">{{ grandChild.label }}</span>
+                              <span class="spacer"></span>
+                              @if (grandChild.badge) {
+                                <span class="badge" [class]="'badge ' + (grandChild.badgeVariant || 'neutral')">{{ grandChild.badge }}</span>
+                              }
+                            </div>
+                          </li>
+                        }
+                      </ul>
+                    }
+                  </li>
+                }
+              }
+            </ul>
+          }
         </li>
-      </ng-template>
-    </ng-container>
-  </ng-template>
+      }
+    }
+  </ul>
 </nav>
 
 <div class="nav-footer">
-  <div class="nav-footer-version" *ngIf="isExpanded()">
-    <span>Version: 14.01 </span>
-    <span>AngularBase: 12.0.1</span>
-  </div>
+  @if (isExpanded()) {
+    <div class="nav-footer-version">
+      <span>Version: 14.01 </span>
+      <span>AngularBase: 12.0.1</span>
+    </div>
+  }
 </div>
 
 

@@ -1,13 +1,13 @@
 import { Component, ElementRef, ViewChild, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { NavMenuChildItemComponent } from './nav-menu-child-item';
 
 @Component({
   selector: 'nav-menu',
   standalone: true,
-  imports: [NgFor, NgIf, MatIconModule, MatMenuModule],
+  imports: [MatIconModule, MatMenuModule, NavMenuChildItemComponent],
   templateUrl: './nav-menu.html',
   styleUrls: ['../app.scss']
 })
