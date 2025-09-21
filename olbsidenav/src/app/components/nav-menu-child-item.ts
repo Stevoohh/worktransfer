@@ -2,17 +2,7 @@ import { Component, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-
-export type MenuItem = {
-  icon: string;
-  label: string;
-  route?: string;
-  externalUrl?: string;
-  expanded?: boolean;
-  badge?: string;
-  badgeVariant?: 'neutral' | 'info' | 'success' | 'warn';
-  children?: MenuItem[];
-};
+import { MenuItem } from '../types/menu.types';
 
 @Component({
   selector: 'nav-menu-child-item',

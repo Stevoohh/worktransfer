@@ -7,66 +7,12 @@
 
 <nav class="nav-content" [class.collapsed]="!isExpanded()">
   <ul class="menu">
-    @for (node of menu(); track node.label || node.heading) {
-      @if (isHeading(node)) {
-        <li class="menu-heading">{{ node.heading }}</li>
-      } @else {
-        <li class="menu-item" [class.active]="isActive(node)" [class.ancestor-active]="isAncestorActive(node)">
-          <div class="menu-row" [class.clickable]="node.children?.length" (click)="onParentClick(node)" [routerLink]="!node.children?.length && node.route ? node.route : null">
-            <mat-icon class="menu-icon">{{ node.icon }}</mat-icon>
-            <span class="menu-label">{{ node.label }}</span>
-            <span class="spacer"></span>
-            @if (node.badge) {
-              <span class="badge" [class]="'badge ' + (node.badgeVariant || 'neutral')">{{ node.badge }}</span>
-            }
-            @if (node.children?.length && isExpanded()) {
-              <mat-icon>{{ node.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-            }
-          </div>
-
-          @if (node.children?.length && node.expanded && isExpanded()) {
-            <ul class="submenu">
-              @for (child of node.children; track child.label) {
-                @if (isHeading(child)) {
-                  <li class="menu-heading">{{ child.heading }}</li>
-                } @else {
-                  <li class="menu-item" [class.active]="isActive(child)" [class.ancestor-active]="isAncestorActive(child)">
-                    <div class="menu-row" [class.clickable]="child.children?.length" (click)="onParentClick(child)" [routerLink]="!child.children?.length && child.route ? child.route : null">
-                      <mat-icon class="menu-icon">{{ child.icon }}</mat-icon>
-                      <span class="menu-label">{{ child.label }}</span>
-                      <span class="spacer"></span>
-                      @if (child.badge) {
-                        <span class="badge" [class]="'badge ' + (child.badgeVariant || 'neutral')">{{ child.badge }}</span>
-                      }
-                      @if (child.children?.length && isExpanded()) {
-                        <mat-icon>{{ child.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-                      }
-                    </div>
-
-                    @if (child.children?.length && child.expanded && isExpanded()) {
-                      <ul class="submenu">
-                        @for (grandChild of child.children; track grandChild.label) {
-                          <li class="menu-item" [class.active]="isActive(grandChild)">
-                            <div class="menu-row" (click)="onParentClick(grandChild)" [routerLink]="grandChild.route">
-                              <mat-icon class="menu-icon">{{ grandChild.icon }}</mat-icon>
-                              <span class="menu-label">{{ grandChild.label }}</span>
-                              <span class="spacer"></span>
-                              @if (grandChild.badge) {
-                                <span class="badge" [class]="'badge ' + (grandChild.badgeVariant || 'neutral')">{{ grandChild.badge }}</span>
-                              }
-                            </div>
-                          </li>
-                        }
-                      </ul>
-                    }
-                  </li>
-                }
-              }
-            </ul>
-          }
-        </li>
-      }
-    }
+    <nav-tree-item 
+      [nodes]="menu()" 
+      [isExpanded]="isExpanded()" 
+      [currentUrl]="currentUrl()"
+      (toggleRequested)="toggleRequested.emit()">
+    </nav-tree-item>
   </ul>
 </nav>
 

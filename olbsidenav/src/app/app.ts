@@ -7,19 +7,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavMenuComponent } from './components/nav-menu';
 import { NavTreeComponent } from './components/nav-tree';
-
-// Menu types
-export type MenuHeading = { heading: string };
-export type MenuItem = {
-  icon: string;
-  label: string;
-  route?: string;
-  externalUrl?: string;
-  expanded?: boolean;
-  badge?: string;
-  badgeVariant?: 'neutral' | 'info' | 'success' | 'warn';
-  children?: MenuItem[];
-};
+import { MenuHeading, MenuItem } from './types/menu.types';
 
 @Component({
   selector: 'app-root',
