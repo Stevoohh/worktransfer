@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, input, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, input, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,11 +17,41 @@ export class NavMenuComponent {
   @ViewChild('bannerMenuViewport') bannerMenuViewport?: ElementRef<HTMLDivElement>;
   protected readonly canScrollLeft = signal<boolean>(false);
   protected readonly canScrollRight = signal<boolean>(false);
+  protected readonly currentUrl = signal<string>('');
 
-  constructor(private readonly router: Router) {}
+  private readonly router = inject(Router);
+
+  constructor() {
+    // Initialize current url
+    this.currentUrl.set(window?.location?.pathname || '');
+    // Keep url updated
+    this.router.events.subscribe((evt: any) => {
+      if (evt?.constructor?.name === 'NavigationEnd') {
+        this.currentUrl.set(this.router.url);
+      }
+    });
+  }
 
   protected isItem(item: any): boolean {
     return !!item && typeof (item as any).heading !== 'string';
+  }
+
+  protected isActive(node: any): boolean {
+    return !!node?.route && this.currentUrl() === node.route;
+  }
+
+  protected isAncestorActive(node: any): boolean {
+    if (!node?.children?.length) return false;
+    return this.hasDescendantWithRoute(node, this.currentUrl());
+  }
+
+  private hasDescendantWithRoute(node: any, url: string): boolean {
+    if (!node?.children?.length) return false;
+    for (const child of node.children) {
+      if (child?.route && child.route === url) return true;
+      if (child?.children?.length && this.hasDescendantWithRoute(child, url)) return true;
+    }
+    return false;
   }
 
   protected openExternal(node: any): void {

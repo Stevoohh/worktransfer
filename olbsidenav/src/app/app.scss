@@ -73,6 +73,17 @@
   background: rgba(0,0,0,0.04);
 }
 
+.banner-item.active {
+  background-color: red;
+}
+.banner-item.ancestor-active {
+  background-color: blue;
+}
+
+.active {
+  background-color: red;
+}
+
 .banner-left .logo {
   display: inline-flex;
   align-items: center;

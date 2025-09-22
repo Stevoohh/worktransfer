@@ -7,7 +7,9 @@
       @for (item of menu(); track item.label) {
         @if (isItem(item)) {
           @if (!item.children?.length) {
-            <button class="banner-item" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
+            <button class="banner-item" 
+                    [class.active]="isActive(item)" 
+                    (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
               <mat-icon>{{ item.icon }}</mat-icon>
               <span>{{ item.label }}</span>
               @if (item.badge) {
@@ -15,7 +17,10 @@
               }
             </button>
           } @else {
-            <button class="banner-item" [matMenuTriggerFor]="menuRef">
+            <button class="banner-item" 
+                    [class.active]="isActive(item)" 
+                    [class.ancestor-active]="isAncestorActive(item)"
+                    [matMenuTriggerFor]="menuRef">
               <mat-icon>{{ item.icon }}</mat-icon>
               <span>{{ item.label }}</span>
               @if (item.badge) {
