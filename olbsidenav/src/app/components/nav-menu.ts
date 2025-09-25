@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, input, signal, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, input, signal, inject, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -11,7 +11,7 @@ import { NavMenuChildItemComponent } from './nav-menu-child-item';
   templateUrl: './nav-menu.html',
   styleUrls: ['../app.scss']
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements AfterViewInit {
   menu = input<Array<any>>([]);
 
   @ViewChild('bannerMenuViewport') bannerMenuViewport?: ElementRef<HTMLDivElement>;
@@ -30,6 +30,14 @@ export class NavMenuComponent {
         this.currentUrl.set(this.router.url);
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    // nach dem ersten Render prüfen
+    this.updateBannerMenuScrollState();
+
+    // optional: auch bei Fenster-Resize prüfen
+    window.addEventListener('resize', this.updateBannerMenuScrollState.bind(this));
   }
 
   protected isItem(item: any): boolean {
@@ -79,15 +87,16 @@ export class NavMenuComponent {
 
   private updateBannerMenuScrollState(): void {
     const viewport = this.bannerMenuViewport?.nativeElement;
-    if (!viewport) {
-      this.canScrollLeft.set(false);
-      this.canScrollRight.set(false);
-      return;
-    }
-    const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
-    this.canScrollLeft.set(viewport.scrollLeft > 0);
-    this.canScrollRight.set(viewport.scrollLeft < maxScrollLeft - 1);
+  if (!viewport) {
+    this.canScrollLeft.set(false);
+    this.canScrollRight.set(false);
+    return;
   }
-}
 
+  const maxScrollLeft = viewport.scrollWidth - viewport.clientWidth;
+
+  this.canScrollLeft.set(viewport.scrollLeft > 0);
+  this.canScrollRight.set(Math.ceil(viewport.scrollLeft) < Math.floor(maxScrollLeft));
+}
+}
 

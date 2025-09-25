@@ -38,8 +38,17 @@
 
 .banner-menu-viewport {
   position: relative;
-  overflow: hidden; //overflow: auto hidden; für den Fall das die Scrollbar angezeigt werden soll
+  // overflow: hidden; //overflow: auto hidden; für den Fall das die Scrollbar angezeigt werden soll
   -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overflow-y: hidden; // sicherheitshalber
+  // Scrollbar verstecken, aber trotzdem scrollbar machen
+  scrollbar-width: none;     // Firefox
+  -ms-overflow-style: none;  // IE, Edge Legacy
+}
+
+.banner-menu-viewport::-webkit-scrollbar {
+  display: none; // Chrome, Safari, neuer Edge
 }
 
 .banner-menu-viewport .banner-menu {
@@ -68,6 +77,8 @@
   border-radius: 16px;
   background: #fff;
   cursor: pointer;
+  flex: 0 0 auto;       /* Button soll sich nicht ausdehnen */
+  white-space: nowrap;
 }
 .banner-item:hover {
   background: rgba(0,0,0,0.04);

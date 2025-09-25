@@ -115,7 +115,17 @@ export class App {
       ],
     },
     { icon: 'settings', label: 'Einstellungen', route: '/einstellungen' },
+    { icon: 'open_in_new', label: 'Beispiellink mit einem langem Text', externalUrl: 'https://example.com' },
     { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+    { icon: 'open_in_new', label: 'Beispiellink', externalUrl: 'https://example.com' },
+   
   ]);
 
   protected isHeading(item: any): item is { heading: string } {
