@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MenuItem, MenuHeading } from '../types/menu.types';
@@ -52,6 +52,14 @@ export class NavTreeItemComponent {
   readonly toggleRequested = output<void>();
 
   constructor(private readonly router: Router) {}
+
+  // Auto-expand any ancestor nodes whose subtree contains the current URL
+  private readonly autoExpandEffect = effect(() => {
+    const url = this.currentUrl();
+    const items = this.nodes();
+    if (!url || !Array.isArray(items) || items.length === 0) return;
+    this.expandAncestorsForUrl(items, url);
+  });
 
   protected isHeading(item: any): item is MenuHeading {
     return !!item && typeof (item as any).heading === 'string';
@@ -120,5 +128,24 @@ export class NavTreeItemComponent {
       if (child?.children?.length && this.hasDescendantWithRoute(child, url)) return true;
     }
     return false;
+  }
+
+  private expandAncestorsForUrl(nodes: Array<any>, url: string): boolean {
+    let foundInThisLevel = false;
+    for (const node of nodes) {
+      let foundHere = false;
+      if (node?.route === url) {
+        foundHere = true;
+      } else if (node?.children?.length) {
+        const foundInChildren = this.expandAncestorsForUrl(node.children, url);
+        if (foundInChildren) {
+          // Ensure parent is expanded to reveal the active descendant
+          node.expanded = true;
+          foundHere = true;
+        }
+      }
+      foundInThisLevel = foundInThisLevel || foundHere;
+    }
+    return foundInThisLevel;
   }
 }

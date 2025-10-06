@@ -82,7 +82,6 @@ export class App {
           route: '/projekte/b',
           badge: 'soon',
           badgeVariant: 'neutral',
-          expanded: true,
           children: [
             { icon: 'assignment', label: 'Projekt B2', route: '/projekte/b/b2' },
             {
