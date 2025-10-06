@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, input, signal, inject, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { NavMenuChildItemComponent } from './nav-menu-child-item';
@@ -20,6 +21,7 @@ export class NavMenuComponent implements AfterViewInit {
   protected readonly currentUrl = signal<string>('');
 
   private readonly router = inject(Router);
+  private readonly viewportScroller = inject(ViewportScroller);
 
   constructor() {
     // Initialize current url
@@ -68,9 +70,19 @@ export class NavMenuComponent implements AfterViewInit {
     }
   }
 
-  protected navigateTo(route: string | undefined): void {
+  protected navigateTo(route: string | undefined, anchor?: string): void {
     if (!route) return;
-    this.router.navigateByUrl(route);
+    if (!anchor) {
+      this.router.navigateByUrl(route);
+      return;
+    }
+    const currentPath = window?.location?.pathname || '';
+    const navigate = currentPath !== route
+      ? this.router.navigateByUrl(route + '#' + anchor)
+      : Promise.resolve(true);
+    navigate.then(() => {
+      setTimeout(() => this.viewportScroller.scrollToAnchor(anchor), 0);
+    });
   }
 
   protected onBannerMenuScroll(): void {

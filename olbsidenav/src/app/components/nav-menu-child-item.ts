@@ -1,5 +1,6 @@
 import { Component, input, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MenuItem } from '../types/menu.types';
@@ -13,7 +14,7 @@ import { MenuItem } from '../types/menu.types';
       @if (!item.children?.length) {
         <button mat-menu-item 
                 [class.active]="isActive(item)"
-                (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route)">
+                (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route, item.anchor)">
           <mat-icon>{{ item.icon }}</mat-icon>
           <span>{{ item.label }}</span>
           @if (item.badge) {
@@ -45,6 +46,7 @@ export class NavMenuChildItemComponent {
   protected readonly currentUrl = signal<string>('');
 
   private readonly router = inject(Router);
+  private readonly viewportScroller = inject(ViewportScroller);
 
   constructor() {
     // Initialize current url
@@ -63,9 +65,19 @@ export class NavMenuChildItemComponent {
     }
   }
 
-  protected navigateTo(route: string | undefined): void {
+  protected navigateTo(route: string | undefined, anchor?: string): void {
     if (!route) return;
-    this.router.navigateByUrl(route);
+    if (!anchor) {
+      this.router.navigateByUrl(route);
+      return;
+    }
+    const currentPath = window?.location?.pathname || '';
+    const navigate = currentPath !== route
+      ? this.router.navigateByUrl(route + '#' + anchor)
+      : Promise.resolve(true);
+    navigate.then(() => {
+      setTimeout(() => this.viewportScroller.scrollToAnchor(anchor, { behavior: 'smooth' }), 0);
+    });
   }
 
   protected isActive(node: any): boolean {

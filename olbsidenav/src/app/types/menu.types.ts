@@ -4,6 +4,7 @@ export type MenuItem = {
   icon: string;
   label: string;
   route?: string;
+  anchor?: string;
   externalUrl?: string;
   expanded?: boolean;
   badge?: string;
