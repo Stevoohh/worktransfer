@@ -90,23 +90,24 @@ export class App {
               route: '/projekte/b/b3',
               badge: 'soon',
               badgeVariant: 'neutral',
+          children: [
+            { icon: 'label_important', label: 'Zu Abschnitt X', route: '/projekte/b/b3', anchor: 'abschnitt-x' },
+            { 
+              icon: 'assignment', 
+              label: 'Projekt B4', 
+              route: '/projekte/b/b3/b4',
               children: [
-                { 
-                  icon: 'assignment', 
-                  label: 'Projekt B4', 
-                  route: '/projekte/b/b3/b4',
+                {
+                  icon: 'assignment',
+                  label: 'Projekt B5',
+                  route: '/projekte/b/b3/b4/b5',
                   children: [
-                    {
-                      icon: 'assignment',
-                      label: 'Projekt B5',
-                      route: '/projekte/b/b3/b4/b5',
-                      children: [
-                        { icon: 'assignment', label: 'Projekt B6', route: '/projekte/b/b3/b4/b5/b6' }
-                      ]
-                    }
+                    { icon: 'assignment', label: 'Projekt B6', route: '/projekte/b/b3/b4/b5/b6' }
                   ]
                 }
-              ],
+              ]
+            }
+          ],
             },
           ],
         },

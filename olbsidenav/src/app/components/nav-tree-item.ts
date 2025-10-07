@@ -1,7 +1,8 @@
-import { Component, input, output, effect } from '@angular/core';
+import { Component, input, output, effect, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MenuItem, MenuHeading } from '../types/menu.types';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'nav-tree-item',
@@ -52,6 +53,7 @@ export class NavTreeItemComponent {
   readonly toggleRequested = output<void>();
 
   constructor(private readonly router: Router) {}
+  private readonly viewportScroller = inject(ViewportScroller);
 
   // Auto-expand any ancestor nodes whose subtree contains the current URL
   private readonly autoExpandEffect = effect(() => {
@@ -92,7 +94,7 @@ export class NavTreeItemComponent {
       // Sidenav is expanded: toggle node state and navigate if route exists
       this.toggleNode(node);
       if (node.route) {
-        this.router.navigateByUrl(node.route);
+        this.navigateWithAnchor(node.route, node.anchor);
       }
       return;
     }
@@ -102,7 +104,7 @@ export class NavTreeItemComponent {
       return;
     }
     if (node?.route) {
-      this.router.navigateByUrl(node.route);
+      this.navigateWithAnchor(node.route, node.anchor);
     }
   }
 
@@ -147,5 +149,19 @@ export class NavTreeItemComponent {
       foundInThisLevel = foundInThisLevel || foundHere;
     }
     return foundInThisLevel;
+  }
+
+  private navigateWithAnchor(route: string, anchor?: string): void {
+    if (!anchor) {
+      this.router.navigateByUrl(route);
+      return;
+    }
+    const currentPath = window?.location?.pathname || '';
+    const navigate = currentPath !== route
+      ? this.router.navigateByUrl(route + '#' + anchor)
+      : Promise.resolve(true);
+    navigate.then(() => {
+      setTimeout(() => this.viewportScroller.scrollToAnchor(anchor, { behavior: 'smooth' }), 0);
+    });
   }
 }
