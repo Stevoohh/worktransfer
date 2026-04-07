@@ -1,0 +1,35 @@
+<section class="page">
+  <h1>CodeMirror 6 + Material Tab Bar</h1>
+
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="tabbar">
+    @for (tab of tabs; track tab.id) {
+      <a
+        mat-tab-link
+        [active]="activeTab() === tab.id"
+        (click)="setActiveTab(tab.id)"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <mat-tab-nav-panel #tabPanel class="tab-panel">
+    <div class="tab-content" [class.is-hidden]="activeTab() !== 'editor'">
+      <p class="hint">Das Demo-Log ist vertikal und horizontal scrollbar.</p>
+      <div class="editor-shell">
+        <div #editorHost class="editor-host"></div>
+      </div>
+    </div>
+
+    <div class="tab-content" [class.is-hidden]="activeTab() !== 'stats'">
+      <h2>Statistik</h2>
+      <p>Eintraege: 260+</p>
+      <p>Erstellt fuer Demo-Zwecke mit CodeMirror 6.</p>
+    </div>
+
+    <div class="tab-content" [class.is-hidden]="activeTab() !== 'about'">
+      <h2>Info</h2>
+      <p>Diese Komponente kombiniert Angular Material Tab Bar und einen scrollbaren Editor.</p>
+    </div>
+  </mat-tab-nav-panel>
+</section>
