@@ -1,0 +1,31 @@
+variables:
+  LIBRARY: '@olb/angular-base'
+  HELM_CHART: 'olb-base-angular'
+  AUTO_DEPLOY_TO_DEV: 'true'
+
+stages:
+  - build
+  - test
+  - qualitygate
+  - prepare deployment
+  - deploy
+
+include:
+  - project: 'ci-templates/ci-templates'
+    ref: 'master'
+    file:
+      - '/npm/npm-library.yml'
+      - '/docker/docker-app.yml'
+      - '/deployment/deployment.yml'
+
+build-demo:
+  stage: build
+  extends: .only-branches-and-merge-requests
+  artifacts:
+    paths:
+      - '**/dist/**'
+    expire_in: 1 week
+  allow_failure: false
+  script:
+    - CYPRESS_INSTALL_BINARY=0 npm install
+    - npm run build

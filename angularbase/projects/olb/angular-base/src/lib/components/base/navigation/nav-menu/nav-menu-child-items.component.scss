@@ -1,0 +1,40 @@
+@use "colors" as olb-colors;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  min-width: 22px;
+  padding: 0 8px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+.badge.neutral {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.badge.info {
+  background: #ffebee;
+  color: #d32f2f;
+}
+.badge.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.badge.warn {
+  background: #fff8e1;
+  color: #f57c00;
+}
+
+.active,
+.active > .mat-icon {
+  color: olb-colors.$primary-text;
+  background-color: olb-colors.$primary;
+}
+
+.active:hover {
+  background-color: olb-colors.$primary;
+}

@@ -1,0 +1,87 @@
+@use "colors" as olb-colors;
+@use "custom" as olb-custom;
+
+mat-card-header {
+  padding-top: 0;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.primary {
+  background-color: olb-colors.$primary;
+  color: olb-colors.$primary-text;
+}
+
+.secondary {
+  background-color: olb-colors.$secondary;
+  color: olb-colors.$secondary-text;
+}
+
+.accent {
+  background-color: olb-colors.$accent;
+  color: olb-colors.$accent-text;
+}
+
+.warn {
+  background-color: olb-colors.$warn;
+  color: olb-colors.$warn-text;
+}
+
+.error {
+  background-color: olb-colors.$error;
+  color: olb-colors.$error-text;
+}
+
+.info {
+  background-color: olb-colors.$info;
+  color: olb-colors.$info-text;
+}
+
+.color-card {
+  width: 250px;
+}
+
+.small-color-card {
+  width: 250px;
+  height: 70px;
+}
+
+.colors {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+}
+
+.base-colors {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.all-colors-container,
+.simple-colors-container {
+  display: flex;
+  flex-direction: row;
+  width: 1200px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.logos {
+  display: flex;
+  gap: 20px;
+}
+
+.demo-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}

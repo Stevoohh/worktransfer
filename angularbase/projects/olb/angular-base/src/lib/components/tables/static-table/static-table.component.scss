@@ -1,0 +1,30 @@
+::ng-deep .static-table {
+  width: 100%;
+  &.mat-mdc-table thead {
+    background-color: #f9f9f9;
+  }
+  tr {
+    height: 56px;
+  }
+  tr:hover {
+    background-color: #fbfbfb;
+  }
+  th {
+    color: #616161;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  td {
+    font-size: 13px;
+    color: #1e1e1e;
+    line-height: 0.6;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+  }
+}
+
+.paginator {
+  bottom: 0px;
+  position: sticky;
+}

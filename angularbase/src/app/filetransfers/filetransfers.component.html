@@ -1,0 +1,93 @@
+@if (filetransferConfigs) {
+  <div style="padding-bottom: 48px">
+    <h1>An Cluster oder SFTP Share</h1>
+    <h2>Doku</h2>
+    <p>
+      Falls du an eine Cluster-Anwendung schicken möchtest, schaue hier:
+      <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster">
+        https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster
+      </a>
+    </p>
+    <p>
+      Falls du den SFTP für eine Dateiübertragung zwischen verschiedenen Anwendungen nutzen möchtest, schaue hier:
+      <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster">
+        https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster
+      </a>
+    </p>
+    <h2>Troubleshooting</h2>
+    <p>
+      Als erstes schaue dir unten die Liste der Konfigurationen an. Ist der Filetransfer vorhanden und dein User eingetragen, dann kannst du im Logbuch schauen:
+    </p>
+    <p>
+      Logs ausgeführter Jobs im Cluster sind im Logbuch verfügbar. Einfach als Jobnamen den Namen des Filetransfers nehmen und das mtc-Präfix entfernen - z.B.
+      mtc_repertorium_int --> repertorium_int
+    </p>
+    <p>Falls das auch nicht hilft, schau in Gitlab nach:</p>
+    <p>
+      Für Probleme mit dem SFTP:
+      <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster#m%C3%B6gliche-fehler-beim-sftp">
+        https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster#m%C3%B6gliche-fehler-beim-sftp
+      </a>
+    </p>
+    <p>
+      Für Probleme mit dem Filetransferservice:
+      <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster#m%C3%B6gliche-fehler-beim-filetransfer">
+        https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-ins-Cluster#m%C3%B6gliche-fehler-beim-filetransfer
+      </a>
+    </p>
+    <h2>Konfigurationen</h2>
+    <div style="display: flex; flex-direction: column; align-items: flex-start">
+      @for (toCluster of filetransferConfigs.toCluster; track toCluster) {
+        <div class="config-item config-item-client mat-elevation-z2">
+          <div>
+            <strong>{{ toCluster.jobId }}</strong>
+          </div>
+          <div>Email-Empfänger: {{ toCluster.onErrorEmails }}</div>
+          <div>Sendekennungen (nur LDAP): {{ toCluster.users }}</div>
+          <div>Folgejob im Cluster: {{ toCluster.job || "Kein" }}</div>
+        </div>
+      }
+    </div>
+    <h1>An Server ohne SFTP</h1>
+    <p>
+      Falls du den SFTP für eine Dateiübertragung zwischen verschiedenen Anwendungen nutzen möchtest, schaue hier:
+      <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-aus-dem-Cluster">
+        https://gitlab.olb.de/manuals/gitlab/-/wikis/Containerisierung/Filetransfer-aus-dem-Cluster
+      </a>
+    </p>
+    <div style="display: flex; flex-direction: column; align-items: flex-start">
+      @for (toServer of filetransferConfigs.toServer; track toServer) {
+        <div class="config-item config-item-server mat-elevation-z2">
+          <div>
+            <strong>{{ toServer.filetransferId }}</strong>
+          </div>
+          <div>Email-Empfänger: {{ toServer.onErrorEmails }}</div>
+          <div>Sendekennungen (nur kc): {{ toServer.senderKeycloakUsers || "Keine!" }}</div>
+          <div>Zielserver: {{ toServer.targetServers }}</div>
+          <div>Zielverzeichnis: {{ toServer.targetDirectory }}</div>
+          <div>Zieluser: {{ toServer.targetOsUser }}</div>
+        </div>
+      }
+    </div>
+    <h1>In einen laufenden Container</h1>
+    <div style="display: flex; flex-direction: column; align-items: flex-start">
+      @for (toContainer of filetransferConfigs.toContainer; track toContainer) {
+        <div class="config-item config-item-container mat-elevation-z2">
+          <div>
+            <strong>{{ toContainer.filetransferId }}</strong>
+          </div>
+          <div>Email-Empfänger: {{ toContainer.onErrorEmails }}</div>
+          <div>Sendekennungen (kc): {{ toContainer.senderKeycloakUsers || "Keine!" }}</div>
+          <div>Sendekennungen (ldap): {{ toContainer.senderLdapUsers || "Keine!" }}</div>
+          <div>Cluster: {{ toContainer.clusterName }}</div>
+          <div>Namespace: {{ toContainer.namespace }}</div>
+          <div>Pod: {{ toContainer.pod }}</div>
+          <div>Container: {{ toContainer.container }}</div>
+          <div>Zielverzeichnis: {{ toContainer.targetDirectory }}</div>
+          <div>Folgeverarbeitung: {{ toContainer.followUpScript || "Keine" }}</div>
+          <div>Email bei Fehler: {{ toContainer.onErrorEmails }}</div>
+        </div>
+      }
+    </div>
+  </div>
+}

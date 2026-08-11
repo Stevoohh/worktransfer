@@ -1,0 +1,45 @@
+<h2>Tabellen</h2>
+
+<h2>Simplemattable</h2>
+<p>Tabellen können mit der Library simplemattable erstellt werden. Dazu zunächst das Paket in die package.json aufnehmen:</p>
+<pre>
+  "simplemattable": "^17.0.0",
+</pre>
+
+<p>Dann das Modul im AppModule importieren:</p>
+
+<pre>
+  imports: [
+    ...
+    SimplemattableModule,
+  ]
+</pre>
+
+<p>Danach bspw. wie folgt im Code verwenden:</p>
+
+<app-code [html]="html" [ts]="ts" title="Simplemattable"></app-code>
+
+<p>Das sieht dann so aus:</p>
+
+<div style="width: 600px" class="simplemattable-demo">
+  <smc-simplemattable [columns]="columns" [data]="data" [editable]="true" [deletable]="true"></smc-simplemattable>
+</div>
+
+<p>
+  Alle weiteren Infos inklusive Beispiele für alle Funktionen hier: <a href="https://smc-demo.simplex24.de" target="_blank">https://smc-demo.simplex24.de</a>
+</p>
+
+<p>Zu den Funktionen gehören u.A.: Sortierung, Filter, Transform (Text Mapping), Custom Styles, Frontend oder Backend Pagination, Ausklappbare Zeilen, ...</p>
+
+<h2>Statictable</h2>
+<p>Alternativ kann für einfache statische Listen die static-table verwendent werden</p>
+<pre>Diese Tabelle basiert auf der von Angular Material bereitgestellten mat-table</pre>
+<p>Damit die Tabelle nur die Zeilen scrollt und Kopf -und Fußzeile fixiert hält dem parent (zb. div) mit größe und overflow angeben:</p>
+<pre>style="width: 600px; height: 300px; overflow: auto;</pre>
+<app-code [html]="staticTableHtml" [ts]="staticTableTs" title="Statictable"></app-code>
+
+<div style="width: 600px; height: 300px; overflow: auto">
+  <olb-static-table [columnNames]="staticTableColumnNames" [columns]="staticTableColumns" [data]="staticTableDataSource"></olb-static-table>
+</div>
+<br />
+<br />

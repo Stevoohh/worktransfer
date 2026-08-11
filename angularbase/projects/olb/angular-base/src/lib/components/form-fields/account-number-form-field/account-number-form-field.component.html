@@ -1,0 +1,18 @@
+<mat-form-field [appearance]="appearance" hintLabel="{{ hintLabel }}">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    #input
+    matInput
+    [formControl]="control"
+    type="text"
+    [minlength]="length || null"
+    [maxlength]="length || null"
+    onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+    />
+    @if (icon) {
+      <mat-icon matSuffix>{{ icon }}</mat-icon>
+    }
+    @if (showHint) {
+      <mat-hint align="end">{{ input.value.length }}/{{ length }}</mat-hint>
+    }
+  </mat-form-field>

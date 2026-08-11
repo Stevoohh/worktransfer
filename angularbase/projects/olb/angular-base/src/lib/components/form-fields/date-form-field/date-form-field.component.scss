@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  width: 165px;
+}
+
+.olb-date-picker {
+  flex: 1 1 auto;
+}
+
+::ng-deep .olb-date-picker .mat-mdc-form-field-error-wrapper {
+  transform: translateY(-45%) !important;
+}

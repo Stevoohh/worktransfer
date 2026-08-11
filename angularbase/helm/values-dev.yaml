@@ -1,0 +1,10 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: angular-demo-dev.olb.de
+      paths:
+        - /
+  tls:
+    - secretName: rancher-dev-tls-secret
+      hosts:
+        - angular-demo-dev.olb.de

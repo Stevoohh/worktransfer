@@ -1,0 +1,24 @@
+<mat-form-field class="olb-date-picker" [hintLabel]="hintLabel" [appearance]="appearance">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    [formControl]="control"
+    [max]="maxDate"
+    [min]="minDate"
+    [matDatepicker]="$any(myDatepicker)"
+    (blur)="inputBlur.emit($event)"
+    [matDatepickerFilter]="$any(dateFilterFn)"
+    (dateChange)="inputBlur.emit($event)"
+  />
+  <mat-datepicker-toggle matSuffix [for]="myDatepicker" [tabIndex]="-1"></mat-datepicker-toggle>
+  <mat-datepicker #myDatepicker></mat-datepicker>
+  @for (error of validationError; track error) {
+    <mat-error>
+      @if (control.invalid && control.touched) {
+        <div>
+          {{ error.message }}
+        </div>
+      }
+    </mat-error>
+  }
+</mat-form-field>

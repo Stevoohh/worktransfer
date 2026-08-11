@@ -1,0 +1,27 @@
+<h2>Olb Direktiven</h2>
+
+<div>Direktiven bieten die Möglichkeit, DOM-Elemente zu manipulieren</div>
+
+<h2>Permission</h2>
+
+<p>
+  Überprüft ob die angegebenen Zugriffsrechte verfügbar sind und sperrt im Negativ-Fall das Steuerlement. Zusätzlich wird ein Tooltip mit Informationen
+  angezeigt. Des weiteren kann eine eigene readonly-Eigenschaft angegeben werden welche mit in die Entscheidung für die Sperrung des Feldes einbezogen wird.
+</p>
+
+<div class="result">
+  <mat-form-field>
+    <mat-label>Mein Argos Recht</mat-label>
+    <input matInput type="text" [(ngModel)]="myPermission" />
+    @if (myPermission) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="myPermission = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <button mat-flat-button color="accent" (click)="buttonClicked()" olbPermission [olbPermissions]="[myPermission]" [olbReadonly]="buttonReadonly">
+    Mein Button inkl. Berechtigung {{ myPermission }}
+  </button>
+  <mat-slide-toggle [(ngModel)]="buttonReadonly">Das eigene readonly: {{ buttonReadonly }}</mat-slide-toggle>
+</div>
+<app-code [html]="buttonHtml" title="OLB Permission Direktive"></app-code>

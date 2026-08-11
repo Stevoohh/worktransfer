@@ -1,0 +1,29 @@
+<h2>API-Generierung</h2>
+
+<p>
+  Zum Generieren eines Clients kann das npm Paket ng-openapi-gen genutzt werden. Das geht am einfachsten in der WSL. Falls ihr noch keine WSL habt,
+  <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Cluster/WSL" target="_blank">siehe hierzu die entsprechende Seite im Wiki.</a> Das Programm muss
+  zunächst installiert werden. Dazu in der WSL einmal folgenden Befehl ausführen:
+</p>
+
+<app-code [bash]="npmInstallBash" title="ng-openapi-gen"></app-code>
+
+<p>
+  Dann folgendes Skript als generate-api.bash in das Root des Projektes kopieren. Dabei "../tulp-controller-api/api-docs.yml" ersetzen durch den Pfad zu eurer
+  api-docs.yml
+</p>
+
+<app-code [bash]="bash" title="generate-api.bash"></app-code>
+
+<p>Dann in der app-module.ts das ApiModule bei den Imports ergänzen:</p>
+
+<app-code [ts]="moduleTs" title="app-module.ts"></app-code>
+
+<p>
+  Dann das Skript ausführen. Dazu mit der WSL aus dem Projektverzeichnis bash generate-api.bash ausführen. Das geht auch aus IntelliJ heraus. Dort das Terminal
+  öffnen und einmal bash eingeben, damit ihr in der WSL landet. Dann seid ihr auch sofort im richtigen Projektverzeichnis. Bei der Ausführung des Skripts mit
+  bash generate-api.bash werden die sourcen generiert und können ab dann in eurer Anwendung genutzt werden. Das Skript könnt ihr jedes mal neu ausführen, wenn
+  sich etwas an eurer api-spec geändert hat.
+</p>
+<p>Beispiel für die Benutzung der API-Clients:</p>
+<app-code [ts]="apiCallTs" title="API-Call Beispiel"></app-code>

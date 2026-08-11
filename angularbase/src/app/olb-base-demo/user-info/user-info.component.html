@@ -1,0 +1,9 @@
+<div class="user-info-overlay">
+  <div class="user-texts">
+    <h2>{{ (authenticationService.fullName$ | async) || "Benutzername" }}</h2>
+    <span class="user-title">{{ (authenticationService.name$ | async) || "bNummer" }}</span>
+  </div>
+  <hr />
+  Hier kann dynamisch eine Komponente geladen werden. <br />
+  Dazu ist einfach der OlbUserMenuService zu injecten und show(meineKomponente) aufzurufen.
+</div>

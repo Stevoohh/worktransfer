@@ -1,0 +1,28 @@
+<div style="padding-bottom: 48px">
+  <h1>Angular Updates</h1>
+  <p>Schritt 1: Einen neuen Feature Branch für das Update machen. Der Branch muss clean ohne Änderungen sein.</p>
+  <p>Schritt 2: Auf der cmd:</p>
+  <pre>
+    ng update {{ "@" }}angular/cli {{ "@" }}angular/core <br>
+    Zusätzlich muss Eslint aktualisiert/installiert werden. Falls nicht breits geschehen, hierzu Schritt 3.2 Eslint und Prettier aus der Installation ausführen, ansonsten ng update.
+  </pre>
+  <p>Schritt 3: Commit (ohne Push)</p>
+  <p>Schritt 4: Auf der cmd:</p>
+  <pre>
+    ng update {{ "@" }}angular/material
+  </pre>
+  <pre>
+    Optional kann man mit: 'ng update' geschaut werden, welche Packete veraltet sind um diese dann zu aktualisieren
+  </pre>
+  <p>
+    Schritt 5: Falls ihr bereits MaterialDesign v3 verwendet (Angularbase ab 19.2.0), dann folgende Einträge aus der src/styles.scss entfernen (falls vorhanden)
+  </p>
+  <pre>   {{ "@" }}import "{{ "@" }}olb/angular-base/assets/styles/material-overwrites"; <br>   {{ "@" }}import "{{ "@" }}olb/angular-base/assets/styles/olb-classes";
+  </pre>
+  <p>Schritt 6: npm start und prüfen, ob die Anwendung noch läuft</p>
+  <p>
+    Schritt 7: Commit and push. Wenn ihr wollt, könnt ihr eure Commits noch squashen, aber wenn ihr nicht wisst, was das bedeutet, dann lasst es lieber (ich
+    lasse es selbst auch in der Regel sein)
+  </p>
+  <p>Schritt 8: Fertig!</p>
+</div>

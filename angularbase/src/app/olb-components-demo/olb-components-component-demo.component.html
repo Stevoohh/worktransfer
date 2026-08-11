@@ -1,0 +1,35 @@
+<h2>Olb Drawer</h2>
+
+<p>
+  Die Komponente olb-drawer kann verwendet werden, um links eine Seitenleiste, z.B. für ein Suchformular, darzustellen. Auf der rechten Seite ist dann Platz für
+  den Content, z.B. in Form von Suchergebnissen.
+</p>
+
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    padding: 24px;
+    max-width: 800px;
+    border-radius: 24px;
+    margin-bottom: 48px;
+    border: 1px solid lightgray;
+  "
+>
+  <olb-drawer title="Wuff-Suche">
+    <form search [formGroup]="formGroup" (ngSubmit)="search()" style="display: flex; flex-direction: column; padding-right: 12px">
+      <mat-form-field>
+        <mat-label>Hunderasse</mat-label>
+        <input matInput [formControl]="formGroup.controls.wuff" />
+      </mat-form-field>
+      <button mat-raised-button class="primary-button">
+        <mat-icon>search</mat-icon>
+        Wuff suchen
+      </button>
+    </form>
+    <div content style="padding: 12px">Wuff gefunden!</div>
+  </olb-drawer>
+</div>
+
+<app-code [html]="html" title="OLB Drawer"></app-code>

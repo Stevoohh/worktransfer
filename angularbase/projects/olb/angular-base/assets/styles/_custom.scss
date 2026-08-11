@@ -1,0 +1,100 @@
+@use "@angular/material" as mat;
+@use "colors" as olb-colors;
+
+$toolbar-height: 64px;
+$toolbar-height-small: 56px;
+
+h1 {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 50px;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28.8px;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+h5 {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 16px;
+}
+
+span {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+p,
+div,
+li,
+a {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+/* ICONS */
+.olb-icon-128 {
+  font-size: 128px;
+  height: 128px !important;
+  width: 128px !important;
+  line-height: 128px;
+}
+
+.olb-icon-64 {
+  font-size: 64px;
+  height: 64px !important;
+  width: 64px !important;
+  line-height: 64px;
+}
+
+.olb-icon-32 {
+  font-size: 32px;
+  height: 32px !important;
+  width: 32px !important;
+  line-height: 32px;
+}
+
+// Must be adjusted of Toolbar height changes to avoid overlapping
+// of map with other html-elements
+.olb-fill-height-container {
+  width: 100%;
+  height: calc(100vh - #{$toolbar-height});
+  @media only screen and (max-width: 600px) {
+    height: calc(100vh - #{$toolbar-height-small});
+  }
+}
+
+.snackbar-error {
+  color: white !important;
+  > * {
+    background-color: olb-colors.$red !important;
+  }
+}
+
+.snackbar-error button {
+  color: white !important;
+}
+
+::ng-deep .olb-tooltip > div {
+  white-space: pre-line;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  background-color: yellow;
+}

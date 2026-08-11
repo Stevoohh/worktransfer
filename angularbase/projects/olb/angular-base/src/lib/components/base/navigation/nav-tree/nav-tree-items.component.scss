@@ -1,0 +1,88 @@
+@use "colors" as olb-colors;
+
+.menu-heading {
+  padding: 12px 16px 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  min-width: 22px;
+  padding: 0 8px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+.badge.neutral {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.badge.info {
+  background: #ffebee;
+  color: #d32f2f;
+}
+.badge.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.badge.warn {
+  background: #fff8e1;
+  color: #f57c00;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 15px;
+  border-radius: 0; /* background now applied on container for full-width */
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menu-item {
+  padding: 0 0px;
+  background: transparent;
+}
+
+.menu-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: olb-colors.$primary;
+}
+
+/* Active highlighting over full item width */
+.menu-item.active {
+  padding-left: 3px;
+  background: #e2ebea;
+}
+.menu-item.active > .menu-row {
+  background: olb-colors.$primary;
+  color: olb-colors.$primary-text;
+}
+
+/* Ancestor highlighting over full item width */
+.menu-item.ancestor-active {
+  background: rgba(0, 95, 61, 0.08);
+}
+
+.menu-item.ancestor-active > .menu-row {
+  background: transparent;
+}
+
+.submenu {
+  list-style: none;
+  margin: 0 0 0 12px;
+  padding: 0 0 0 12px;
+  border-left: 1px dashed rgba(0, 0, 0, 0.12);
+}

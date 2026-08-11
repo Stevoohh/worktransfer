@@ -1,0 +1,32 @@
+.container {
+  border-radius: 4px;
+  margin: 24px 0;
+  border: 1px solid;
+  max-width: 900px;
+
+  .header {
+    align-items: center;
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    padding: 8px 8px 8px 16px;
+
+    .title {
+      flex: 1 1 auto;
+    }
+  }
+
+  .code {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.01);
+    margin: 0;
+    font-family: monospace;
+  }
+
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

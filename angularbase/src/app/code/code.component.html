@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="header">
+    <div class="title">
+      {{ title }}
+    </div>
+  </div>
+  <div>
+    <mat-tab-group>
+      @if (html) {
+        <mat-tab label="HTML">
+          <button mat-icon-button (click)="download(html)">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <pre class="code">{{ html }}</pre>
+        </mat-tab>
+      }
+      @if (ts) {
+        <mat-tab label="TS">
+          <button mat-icon-button (click)="download(ts)">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <pre class="code">{{ ts }}</pre>
+        </mat-tab>
+      }
+      @if (scss) {
+        <mat-tab label="SCSS">
+          <button mat-icon-button (click)="download(scss)">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <pre class="code">{{ scss }}</pre>
+        </mat-tab>
+      }
+      @if (bash) {
+        <mat-tab label="bash">
+          <button mat-icon-button (click)="download(bash)">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <pre class="code">{{ bash }}</pre>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+@use "../../../../projects/olb/angular-base/assets/styles/colors" as olb-colors;
+
+p {
+  padding: 10px;
+  width: fit-content;
+  height: auto;
+  border: 1px solid;
+  color: white;
+  background: olb-colors.$secondary;
+  border-radius: 5px;
+}

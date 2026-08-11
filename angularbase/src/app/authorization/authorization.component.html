@@ -1,0 +1,30 @@
+<h2>Berechtigungen</h2>
+
+<h3>Authentication Service</h3>
+
+<p>Der OlbAuthenticationService bietet eine Methode hasAnyRole, die genutzt werden kann, um Berechtigungen abzufragen.</p>
+
+<p>Beispiel: Ihr wollt in eurer Oberfläche einen Button nur anzeigen, wenn der Nutzer das dazugehörige WRITE-Recht hat:</p>
+
+<app-code [html]="htmlHasAnyRole" [ts]="tsHasAnyRole" title="TULP write-only-button"></app-code>
+
+<p>Beispiel: In TULP existiert ein READ und ein WRITE Recht, wobei WRITE READ inkludiert. Das kann bspw. so abgebildet werden:</p>
+
+<app-code [ts]="tsHasRole" title="TULP hasRole Implementierung"></app-code>
+
+<h3>Guard</h3>
+
+<p>
+  Manchmal möchte man Berechtigungen direkt über Routen abbilden, d.h. bestimmte Routen sind erst gar nicht erreichbar, wenn ein bestimmtes Recht fehlt. Dies
+  lässt sich über Guards abbilden:
+</p>
+
+<app-code [ts]="tsGuard" title="TULP Write-only-Guard"></app-code>
+
+<p>In diesem Fall wird der Nutzer zur Seite /no-rights geleitet, wenn er kein Write-Recht hat.</p>
+
+<p>Der Guard muss dann an die Route im canActivate geschrieben werden:</p>
+
+<app-code [ts]="tsGuardRoute" title="TULP Write-only-Guard Routen"></app-code>
+
+<div style="height: 200px"></div>

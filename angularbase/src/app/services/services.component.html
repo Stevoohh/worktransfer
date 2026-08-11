@@ -1,0 +1,12 @@
+<h2>Olb Services</h2>
+<div>Services kapseln komplexe Logik die einfach mittels DI an verschiedenen Stellen im Code wiederverwendet werden kann</div>
+<h2>Olb Document Service</h2>
+<p>Der Olb Document Service ermöglicht das Exportieren von einfachen Datenstrukturen in das PDF, Excel Format</p>
+
+<h3>PDF Export</h3>
+<button mat-flat-button class="primary-button" type="button" (click)="exportPdf()">Export nach PDF</button>
+<app-code [ts]="tsPdf" title="Document Service PDF Export"></app-code>
+<br />
+<h3>Excel Export</h3>
+<button mat-flat-button class="primary-button" (click)="exportExcel()">Export nach Excel</button>
+<app-code [ts]="tsExcel" title="Document Service Excel Export"></app-code>

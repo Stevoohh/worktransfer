@@ -1,0 +1,181 @@
+<h2>Olb Form Fields</h2>
+
+<div>Die Bibliothek bietet verschiedene Formularfelder. Folgend eine Übersicht.</div>
+
+<h2>Datum</h2>
+
+<p>
+  Ein Wrapper für
+  <a href="https://material.angular.io/components/datepicker/overview" rel="noopener" target="_blank"> den Angular Material Datepicker </a>
+</p>
+
+<olb-date-form-field
+  style="margin-top: 24px"
+  [control]="dateControl"
+  [appearance]="'outline'"
+  [validationErrors]="{
+    required: 'Pflichtfeld'
+  }"
+></olb-date-form-field>
+
+<app-code [html]="dateHtml" title="OLB Date Form Field"></app-code>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Typ</th>
+    <th>Datentyp</th>
+    <th>Beschreibung</th>
+  </tr>
+  <tr>
+    <td>control</td>
+    <td>Input</td>
+    <td>FormControl</td>
+    <td>Pflichtfeld</td>
+  </tr>
+  <tr>
+    <td>minDate</td>
+    <td>Input</td>
+    <td>moment.Moment</td>
+    <td>Mindestdatum</td>
+  </tr>
+  <tr>
+    <td>maxDate</td>
+    <td>Input</td>
+    <td>moment.Moment</td>
+    <td>Maximales Datum</td>
+  </tr>
+  <tr>
+    <td>label</td>
+    <td>Input</td>
+    <td>string</td>
+    <td>Name / Überschrift des Formularfelds, Default: "Datum"</td>
+  </tr>
+  <tr>
+    <td>appearance</td>
+    <td>Input</td>
+    <td>string</td>
+    <td>Grafische Darstellung des Formularfelds 'outline', 'fill', Default: "outline"</td>
+  </tr>
+  <tr>
+    <td>validationErrors</td>
+    <td>Input</td>
+    <td>[key: string]: string | null</td>
+    <td>Optionale Validierungstexte</td>
+  </tr>
+  <tr>
+    <td>hintLabel</td>
+    <td>Input</td>
+    <td>string</td>
+    <td>Hinweis unterhalb des Formularfeldes</td>
+  </tr>
+  <tr>
+    <td>dateFilterFn</td>
+    <td>Input</td>
+    <td>DateFilterFn&lt;moment.Moment | null></td>
+    <td>Funktion, die für den Datepicker filtert, welche Daten erlaubt sind</td>
+  </tr>
+  <tr>
+    <td>blur</td>
+    <td>Output</td>
+    <td>FocusEvent | MatDatepickerInputEvent&lt;moment.Moment></td>
+    <td>Event, das getriggert wird, wenn ein Datum gesetzt wird</td>
+  </tr>
+</table>
+
+<h2>Benutzer</h2>
+<p>
+  Ein Wrapper für
+  <a href="https://material.angular.io/components/autocomplete/overview" rel="noopener" target="_blank"> das Angular Material Autocomplete </a>
+</p>
+<olb-user-form-field
+  [userFormControl]="userControl"
+  [validationErrors]="{
+    required: 'Bitte wählen Sie einen Benutzer aus'
+  }"
+></olb-user-form-field>
+<app-code [html]="userHtml" title="OLB User Form Field"></app-code>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Typ</th>
+    <th>Datentyp</th>
+    <th>Beschreibung</th>
+  </tr>
+  <tr>
+    <td>userFormControl</td>
+    <td>Input</td>
+    <td>FormControl</td>
+    <td>Pflichtfeld</td>
+  </tr>
+  <tr>
+    <td>validationErrors</td>
+    <td>Input</td>
+    <td>[key: string]: string | null</td>
+    <td>Optionale Validierungstexte</td>
+  </tr>
+  <tr>
+    <td>optionSelected</td>
+    <td>Output</td>
+    <td>optionSelected&lt;User></td>
+    <td>Event, das getriggert wird, wenn ein Benutzer ausgewählt wurde</td>
+  </tr>
+</table>
+<h2>Kontonummer</h2>
+<p>
+  Dieses Eingabefeld ist für eine Kontonummer gedacht mit belieber Anzahl an positiver Zahlen (default ist 10stellig). <br />
+  Es müssen und können auch nur soviel Zahlen eingegeben werden wie im length-Parameter angegeben
+</p>
+<olb-account-number-form-field
+  [control]="accountSearchControl"
+  [label]="'Meine Kontonummer'"
+  [appearance]="'fill'"
+  [icon]="'search'"
+  [length]="10"
+  [showHint]="true"
+></olb-account-number-form-field>
+<app-code [html]="accountSearchHtml" title="OLB Account Search Form Field"></app-code>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Typ</th>
+    <th>Datentyp</th>
+    <th>Beschreibung</th>
+  </tr>
+  <tr>
+    <td>control</td>
+    <td>Input</td>
+    <td>FormControl</td>
+    <td>Pflichtfeld</td>
+  </tr>
+  <tr>
+    <td>label</td>
+    <td>Input</td>
+    <td>string</td>
+    <td>Name / Überschrift des Formularfelds, Default: "Kontonummer"</td>
+  </tr>
+  <tr>
+    <td>appearance</td>
+    <td>Input</td>
+    <td>MatFormFieldAppearance</td>
+    <td>Aussehen des Formularfelds (umranded=outline oder ohne Rand=fill), Default: "fill"</td>
+  </tr>
+  <tr>
+    <td>icon</td>
+    <td>Input</td>
+    <td>string</td>
+    <td>Name des Icons welches am Ende des Eingabefelds angezeigt wird</td>
+  </tr>
+  <tr>
+    <td>length</td>
+    <td>Input</td>
+    <td>number</td>
+    <td>Anzahl der min und max (also exakt) anzugebenen positiven Zahlen</td>
+  </tr>
+  <tr>
+    <td>showHint</td>
+    <td>Input</td>
+    <td>boolean</td>
+    <td>Gibt an ob der Hinweistext zu den erwarteten Zahlen unter dem Eingabefeld angezeigt werden soll</td>
+  </tr>
+</table>

@@ -1,0 +1,15 @@
+table {
+  td {
+    padding: 2px 8px;
+  }
+
+  td:not(:nth-child(4)) {
+    font-family: monospace;
+  }
+
+  th {
+    padding: 8px;
+    font-weight: normal;
+    background: whitesmoke;
+  }
+}

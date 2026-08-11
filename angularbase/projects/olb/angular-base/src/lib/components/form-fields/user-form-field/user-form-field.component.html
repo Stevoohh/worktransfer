@@ -1,0 +1,20 @@
+<mat-form-field appearance="fill" class="olb-user-formfield">
+  <mat-label>{{ placeholder }}</mat-label>
+  <input matInput [matAutocomplete]="auto" [formControl]="userFormControl" />
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="getSelectedUserDisplayName" (optionSelected)="userSelected($event)">
+    @for (user of filteredUsers | async; track user) {
+      <mat-option [value]="user">
+        <span>{{ getUserDisplayName(user) }} </span>
+      </mat-option>
+    }
+  </mat-autocomplete>
+  @for (error of validationError; track error) {
+    <mat-error>
+      @if (userFormControl.invalid && userFormControl.touched) {
+        <div>
+          {{ error.message }}
+        </div>
+      }
+    </mat-error>
+  }
+</mat-form-field>

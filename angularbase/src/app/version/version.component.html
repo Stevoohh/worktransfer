@@ -1,0 +1,54 @@
+<h1>Aktuelle Versionen</h1>
+
+<p>
+  Hier stehen die aktuellen Versionen verschiedener Bibliotheken. Füge gerne eigene Bibliotheken über das Formular unten hinzu. Diese sind dann nur für dich
+  sichtbar.
+</p>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Artefakt-Beispiel</th>
+    <th>Version</th>
+  </tr>
+  @for (version of versions; track version) {
+    <tr>
+      <td>{{ version.name }}</td>
+      <td>{{ version.artifactId }}</td>
+      <td>{{ version.version }}</td>
+      <td>
+        @if (version.userVersion) {
+          <mat-icon color="warn" (click)="delete(version)" style="cursor: pointer"> delete </mat-icon>
+        }
+      </td>
+    </tr>
+  }
+</table>
+
+<form [formGroup]="formGroup" (ngSubmit)="save()">
+  <h2>Neue Version</h2>
+  <div style="display: flex; align-items: center; flex-wrap: wrap">
+    <mat-form-field style="margin-right: 24px">
+      <mat-label>Name</mat-label>
+      <input matInput [formControl]="formGroup.controls.name" />
+    </mat-form-field>
+    <mat-form-field style="margin-right: 24px">
+      <mat-label>Artefakt (artifactId)</mat-label>
+      <input matInput [formControl]="formGroup.controls.artifactId" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Repository</mat-label>
+      <input type="text" matInput [formControl]="formGroup.controls.repository" [matAutocomplete]="auto" />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option value="npm-hosted">npm-hosted</mat-option>
+        <mat-option value="maven-public">maven-public</mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div>
+    <button type="submit" mat-raised-button color="primary">
+      <mat-icon>save</mat-icon>
+      SPEICHERN
+    </button>
+  </div>
+</form>

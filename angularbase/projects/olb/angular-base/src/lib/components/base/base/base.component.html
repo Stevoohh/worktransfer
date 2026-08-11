@@ -1,0 +1,63 @@
+<div class="global-banner" [ngClass]="toolbarClass">
+  <div class="global-banner__content">
+    <div class="banner-left">
+      <button class="icon-btn" (click)="toggleMenuPlacement()" aria-label="Ansicht umschalten">
+        <mat-icon>{{ showMenuInBanner() ? "reorder" : "clear_all" }}</mat-icon>
+      </button>
+      <div class="logo" aria-label="Logo">
+        <img [src]="logoUrl()" alt="Logo" />
+      </div>
+      <span class="app-title">{{ title() }}</span>
+    </div>
+
+    <div class="banner-center">
+      @if (showMenuInBanner()) {
+        <olb-nav-menu [menu]="menu()"></olb-nav-menu>
+      }
+    </div>
+
+    <div class="banner-right">
+      @if (kordobaEnvironmentService.kordobaEnvironment) {
+        <div class="env-texts">
+          <span class="env-name">{{ kordobaEnvironmentService.kordobaEnvironment.name }}</span>
+          <span class="env-title">{{ toolbarClass }}</span>
+        </div>
+        <span class="v-sep">|</span>
+      }
+
+      @if (!showCustomUserMenu) {
+        <div class="user-texts">
+          <span class="user-name">{{ (authenticationService.fullName$ | async) || "Benutzername" }}</span>
+          <span class="user-title">{{ (authenticationService.name$ | async) || "bNummer" }}</span>
+        </div>
+      } @else {
+        <button (click)="userMenuisOpen = !userMenuisOpen" type="button" cdkOverlayOrigin #origin="cdkOverlayOrigin" class="user-menu-button">
+          <mat-icon class="user-menu-icon">account_circle</mat-icon>
+        </button>
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="origin" [cdkConnectedOverlayOpen]="userMenuisOpen" (detach)="userMenuisOpen = false">
+          <olb-dynamic-host />
+        </ng-template>
+      }
+    </div>
+  </div>
+</div>
+<mat-drawer-container class="shell" [autosize]="true">
+  @if (!showMenuInBanner()) {
+    <mat-drawer class="nav" [class.collapsed]="!isExpanded()" mode="side" [opened]="true" [autoFocus]="false">
+      <olb-nav-tree
+        [menu]="menu()"
+        [isExpanded]="isExpanded()"
+        [appVersion]="appVersion()"
+        [baseVersion]="baseVersion"
+        (toggleRequested)="toggle()"
+        class="nav-tree"
+      ></olb-nav-tree>
+    </mat-drawer>
+  }
+
+  <mat-drawer-content class="content">
+    <section class="page">
+      <router-outlet />
+    </section>
+  </mat-drawer-content>
+</mat-drawer-container>

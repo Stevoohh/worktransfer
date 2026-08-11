@@ -1,0 +1,51 @@
+<h2>Olb Base</h2>
+<p>
+  Die Komponente olb-base stellt die Basis einer OLB-Frontend-Anwendung dar. Sie stellt die Headerleiste sowie die seitliche Navigationsleiste bereit. Außerdem
+  können der angemeldete Benutzer und die aktuelle Kordoba-Umgebung (nur int) angezeigt werden. Diese Demo-Anwendung verwendet genau diese Komponente, um die
+  Rahmenstruktur bereitzustellen. Parameter wie ein Titel, Logo und eine Anwendungsversion können hier angegeben werden.
+</p>
+
+<app-code [html]="html" [ts]="ts" title="OLB Base"></app-code>
+
+<h3 id="base-deeplinks" tabindex="-1">Sidebar Deeplinks</h3>
+<mat-divider></mat-divider>
+
+<p>Deeplinks mit aktiviertem Menuitem und einem zusätzlichem Router-Outlet. Der folgende Link ist im routing hinterlegt.</p>
+<small>/olb-base/deeplink</small><br /><br />
+<button mat-raised-button (click)="openDeeplink()" class="deep-link-button">Deep-Link mittel router.navigate</button>
+<a mat-raised-button href="/olb-base/deeplink">Deep-Link als Html-Link und page reload</a>
+
+<router-outlet class="deeplink-component"></router-outlet>
+
+<h3 id="base-menu" tabindex="-2">Menüaufbau</h3>
+<mat-divider></mat-divider>
+
+<p>
+  Das Navigationsmenü wird als json Objekt deklariert und dem Parameter menuItems zugewiesen. Es kann in der Sidebar in einen Minimodus geschaltet werden, oder
+  als Menü im Banner/Header dargestellt werden. Beides kann einfach mittels der dargestellten Button umgeschaltet werden.
+</p>
+<p>
+  Es gibt die Möglichkeit einfache Links, Links mit Unterlinks(children), funktionslose Ordner oder einfache Titel darzustellen. Außerdem kann zu einem Link ein
+  sogenannter anchor angegeben werden. Dieser gibt die Stelle in der Ziel Komponente an, an die automatisch gesprungen wird sobald auf den Link geklickt wird.
+  Vorraussetzung dafür ist ein entsprechender Eintrag im routing. Der Aufbau sieht wie folgt aus:
+</p>
+
+<app-code [html]="menuStructureHtml" [ts]="menuStructureTs" title="Menüaufbau Beispiel"></app-code>
+
+<h3 id="base-version" tabindex="-3">App-Versionsnummer</h3>
+<mat-divider></mat-divider>
+
+<p>
+  Standardmäßig wird die Version der olb-base unten in der Navigationsleiste angezeigt. Wenn ihr zusätzlich eure eigene Versionsummer dort eintragen wollt, dann
+  geht wie folgt vor:
+</p>
+
+<ul>
+  <li>In der tsconfig.json in den Compiler Options die Zeile "resolveJsonModule": true hinzufügen</li>
+  <li>Parameter appVersion befüllen. Eine Möglichkeit ist die Version aus der package.json wie im folgenden Codebeispiel:</li>
+</ul>
+
+<app-code [html]="appVersionHtml" [ts]="appVersionTs" title="OLB Base App Version"></app-code>
+
+<!-- For easier scrolling at the bottom -->
+<div style="height: 150px"></div>

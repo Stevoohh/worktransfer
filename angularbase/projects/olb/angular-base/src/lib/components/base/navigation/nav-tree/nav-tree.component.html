@@ -1,0 +1,31 @@
+<div class="nav-header">
+  <mat-icon (click)="onToggle()">{{ isExpanded() ? "menu_open" : "read_more" }}</mat-icon>
+  @if (isExpanded()) {
+    <span class="nav-title">Menü</span>
+  }
+</div>
+
+<nav class="nav-content" [class.collapsed]="!isExpanded()">
+  <ul class="menu">
+    <olb-nav-tree-items [nodes]="menu()" [isExpanded]="isExpanded()" [currentUrl]="currentUrl()" (toggleRequested)="toggleRequested.emit()">
+    </olb-nav-tree-items>
+  </ul>
+</nav>
+
+<div class="nav-footer">
+  @if (isExpanded()) {
+    <div class="nav-footer-version">
+      <span>Version: {{ appVersion() }} </span>
+      <span>AngularBase: {{ baseVersion() }}</span>
+    </div>
+    <!-- <a *ngIf="config?.authEnabled" mat-list-item href="/oauth2/authorization/olb" class="login">
+          <mat-icon matListItemIcon class="nav-icon">login</mat-icon>
+          <div matListItemTitle>Login</div>
+        </a> -->
+    <!-- <button mat-icon-button (click)="themeService.toggleTheme()">
+          <mat-icon>
+            {{ themeService.isDarkTheme() ? "dark_mode" : "light_mode" }}
+          </mat-icon>
+        </button>  -->
+  }
+</div>

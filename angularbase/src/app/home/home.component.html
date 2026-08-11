@@ -1,0 +1,224 @@
+<h2>Moin!</h2>
+
+<p>
+  Bevor ihr hier fortfahrt, stellt sicher, dass ihr prinzipiell alles aufgesetzt habt, um eine Angular-Anwendung zu erstellen.
+  <a href="https://gitlab.olb.de/manuals/gitlab/-/wikis/Angular/einrichtung">Weitere Infos siehe hier.</a>
+</p>
+
+<p>Danach gehts erstmal an die Erstellung eurer Angular-Anwendung</p>
+
+<h3>1. Angular-Anwendung erstellen:</h3>
+<h4>1.1 Angular CLI installieren und Projekt anlegen</h4>
+<p>Falls &#64;angular/cli noch nicht installiert ist, einmal in der windows cmd:</p>
+
+<pre>
+npm i -g &#64;angular/cli
+</pre>
+
+<p>Dann:</p>
+
+<pre>
+ng new my-app
+</pre>
+
+<p>Bei der Einrichtung die Fragen wie folgt beantworten:</p>
+
+<ul>
+  <li>Styling? Scss</li>
+  <li>Server-Side Rendering (SSR)? Nein</li>
+</ul>
+
+<h4>1.2 Angular Material installieren</h4>
+<p>Danach noch aus dem Projektverzeichnis heraus angular material einbinden:</p>
+
+<pre>
+ng add &#64;angular/material
+</pre>
+
+<p>Wenn nach einem Theme gefragt wird, einfach das erste auswählen. Alle weiteren Fragen können mit ja beantwortet werden.</p>
+
+<h3>2. Visualstudio Code Extensions (Nur wenn ihr VSCode als IDE verwendet)</h3>
+<p>
+  Für eine ideale IDE Unterstützung sollten folgende Extensions in VSCode installiert werden. <br />
+  Dazu im root folgende Datei anlegen .vscode/extensions.json und den Inhalt mit diesem hier überschreiben:
+</p>
+<app-code [ts]="extensions" title="vscode extensions"></app-code>
+<h3>3. Qualitygate Settings</h3>
+<h4>3.1 Sonarqube</h4>
+<p>
+  Wenn ihr das Projekt zum ersten mal in VSCode öffnet, solltet ihr automatisch gefraget werden ob das Projekt mit dem von https-sonar-olb-de verknüpft werden
+  soll. Dieses mit 'Configure Binding' bestätigen.
+</p>
+<p>
+  Ihr solltet nun in euerer settings.json einen Eintrag für den key: "sonarlint.connectedMode.project" haben. <br />Ansonsten diesen Eintrag manuell in die
+  settings.json schreiben (MEIN-SONAR-PROJEKT-KEY durch euren austauschen):
+</p>
+<app-code [ts]="sonarconfig" title="sonar config"></app-code>
+<p>
+  Alle Regelverstöße werden nun nach jedem push in die Pipeline unter <a href="https://sonar.olb.de/" target="_blank">https://sonar.olb.de/</a> zu eurem Projekt
+  angezeigt
+</p>
+
+<h4>3.2 Eslint und Prettier</h4>
+<p>Für einen einheitliche Code-Style und Regeln müssen neben Sonarqube auch Prettier und Eslint installiert und konfiguriert werden</p>
+<p>Dazu folgende Schritte ausführen:</p>
+<pre>ng add &#64;angular-eslint/schematics</pre>
+<pre>npm i prettier -D</pre>
+<pre>npm i prettier-eslint eslint-config-prettier eslint-plugin-prettier -D</pre>
+<pre>npm i -D &#64;olb/eslint-config &#64;olb/prettier-config</pre>
+<p>Alle Fragen mit ja bestätigen</p>
+<p>Nun wurde im root des Projekts eine Datei angelget: 'eslint.config.js'. Den Inhalt dieser hier anpassen (oder einfach überschreiben):</p>
+<small>meinProjektPrefix durch den eigenen ersetzen / dieser sollte in der angular.json gesetzt werden unter dem prefix key</small>
+<app-code [ts]="eslintconfig" title="eslint config"></app-code>
+<p>Damit prettier funktioniert, diesen Eintrag in die package.json mit aufnehmen (am besten direkt unter dem scripts tag)</p>
+<pre>"prettier": "&#64;olb/prettier-config"</pre>
+<p>Zusätzlich diesen Inhalt in die .vscode/settings.json schreiben oder diese Datei mit Inhalt anlegen:</p>
+<app-code [ts]="settings" title="vscode settings"></app-code>
+<p>nun sollte der Quellcode nach dem Speichern automatisch formatiert werden</p>
+<p>Wenn man möchte das der gesamte Quellcode automatisch formatiert wird, dann folgenden Befehl ausführen:</p>
+<pre>npx prettier --write .</pre>
+<small>Aber Vorsicht mit "." geht er das ganze Projekt durch</small>
+
+<h3>4. Angularbase installieren. In der package.json folgenden Eintrag in den dependencies ergänzen:</h3>
+<pre>
+"&#64;olb/angular-base": "{{ npmVersion }}",
+</pre>
+<p>und installieren mit</p>
+<pre>
+npm install
+</pre>
+
+<h3>5. Angular JSON um Basis-Assets ergänzen</h3>
+<p>Dazu müssen drei Stellen in der Datei angular.json angepasst werden.</p>
+<p>Schaut dazu im JSON unter > projects > (eure app) > architect > build und passt die folgenden drei Schritte an:</p>
+<pre>
+"assets": [
+  ...
+  {{ "{" }}
+  "glob": "**/*",
+    "input": "./node_modules/&#64;olb/angular-base/assets",
+    "output": "/assets/"
+  &#125;
+],
+
+"styles": [
+  ...
+  "&#64;olb/angular-base/assets/styles/_themes.scss",
+],
+
+"stylePreprocessorOptions": {{ "{" }}
+  "includePaths": [
+    ...
+    "&#64;olb/angular-base/assets/styles/"
+  ]
+&#125;
+</pre>
+
+<h3>6. Modul einbinden</h3>
+<h4><u>Für no-standalone Anwendungen</u></h4>
+<p>In eurem AppModule unter imports folgenden Eintrag hinzufügen:</p>
+<pre>
+  AngularBaseModule.forRoot({{ "{" }}
+    authEnabled: true,
+    authApiRootUrl: "/api",
+    errorNotificationEnabled: true
+  {{ "}" }})
+</pre>
+<h4><u>Für standalone Anwendungen</u></h4>
+<p>In eurer app.config.ts die appConfig anpassen:</p>
+<pre>
+  export const appConfig: ApplicationConfig = {{ "{" }}
+    providers: [provideZoneChangeDetection({{ "{" }} eventCoalescing: true {{ "}" }}), provideRouter(routes), AngularBaseModule.provideOlbBase({{ "{" }}
+      authEnabled: true,
+      authApiRootUrl: '/api',
+      errorNotificationEnabled: true
+    {{ "}" }}), importProvidersFrom(ApiModule.forRoot({{ "{" }} rootUrl: '/api' {{ "}" }}))]
+  {{ "}" }};
+</pre>
+<p>Dabei authEnabled auf true setzen, falls ihr ein Backend zur Authentifizierung bereitstellt.</p>
+<p>
+  Dann ebenfalls unter authApiRootUrl die URL bzw. den Pfad pflegen, unter welcher HTTP-Requests gemäß eurer nginx.conf an das Backend geroutet werden. Wenn ihr
+  nicht wisst, was ihr hier eintragen müsst, lasst einfach den o.g. Standard stehen.
+</p>
+<p>Um automatisch Backend http-errors über eine Notification ausgeben zu lassen, kann man die errorNotificationEnabled Eigenschaft auf true setzen</p>
+<pre>Aktuell bei 400er und 500er Codes</pre>
+<input type="button" value="Test Error auslösen" (click)="throwTestError()" />
+
+<h3>7. index.css einbinden</h3>
+<p>In eurer index.html folgende Zeilen ENTFERNEN:</p>
+<pre>
+  {{ "<" }}link rel="preconnect" href="https://fonts.gstatic.com">
+  {{ "<" }}link href="https://fonts.googleapis.com/css2?family=Roboto:wght&#64;300;400;500&display=swap" rel="stylesheet">
+  {{ "<" }}link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</pre>
+<p>Stattdessen folgene Zeile an der gleichen Stelle HINZUFÜGEN:</p>
+<pre>
+  {{ "<" }}link rel="stylesheet" type="text/css" href="/assets/index.css">
+</pre>
+
+<h3>8. tsconfig anpassen</h3>
+<p>In eurer tsconfig.json fügt ihr folgende Zeile hinzu (benötigt für moment = Datumsobjekte):</p>
+<pre>
+  "allowSyntheticDefaultImports": true,
+</pre>
+
+<h3>9. Proxy konfigurieren</h3>
+<p>
+  Wenn ihr ein Backend for Frontend nutzt, dann wollt ihr noch einen Proxy konfigurieren, sodass euer Frontend ohne den Zugriff auf eine andere Domain auch
+  lokal mit eurem Backend sprechen kann. Dazu gibt es einen fertigen Proxy für die lokale Entwicklung von Angular.
+</p>
+<p>Legt die Datei proxy.conf.json mit folgendem Inhalt an:</p>
+<pre
+  >{{ "{" }}
+  "/api": {{ "{" }}
+  "target": "http://localhost:8080",
+    "secure": false,
+    "ws": true,
+    "pathRewrite": {{ "{" }}
+  "^/api": ""
+    &#125;
+  &#125;,
+  "/oauth2": {{ "{" }}
+  "target": "http://localhost:8080",
+    "secure": false,
+    "ws": true
+  &#125;
+&#125;
+</pre>
+<p>Danach tauscht ihr in eurer package.json folgende Zeile aus:</p>
+<pre>
+  "start": "ng serve",
+</pre>
+<p>zu</p>
+<pre>
+   "start": "ng serve --proxy-config proxy.conf.json",
+</pre>
+
+<h3>10. Testing mit Jasmine und Karma (optional)</h3>
+<p>Um eine Code-Coverage zu generieren und diese in Sonarqube sehen zu können:</p>
+<pre>ng generate config karma</pre>
+<p>
+  Im root wurde nun die Datei: karma.conf.js angelegt. Den Inhalt der Datei dem folgendem anpassen oder einfach ersetzen (dabei drauf achten das der
+  coverageReporter path stimmt)
+</p>
+<app-code [ts]="karmaconfig" title="karma config"></app-code>
+<p>Nun die package.json um zwei weitere scipts erweitern:</p>
+<pre>"test": "ng test --no-watch --browsers=Headless --code-coverage",</pre>
+<pre>"test-local": "ng test --browsers=Standard --code-coverage"</pre>
+<p>Um "npm run test" ausführen zu können braucht ihr min. einen Test. Dieser kann auch leer sein</p>
+<p>Als letztes noch die git ignore erweitern. Diesen Code-Block mit in die .gitignore aufnehmen:</p>
+<pre># Reports <br>
+  /Reports/* <br>
+  .scannerwork/* <br>
+  reports/* <br>
+  coverage/*</pre>
+<h3>11. Fertig!</h3>
+<p>
+  Ihr könnte jetzt die Komponenten aus der Olb-Basisbibliothek benutzen. Als erstes schaut ihr euch am besten
+  <a routerLink="/olb-base">die Komponente olb-base an</a>.
+</p>
+<p>Das Frontend könnt ihr bereits jetzt mit folgendem Befehl starten:</p>
+<pre>
+  npm start
+</pre>
+<div style="height: 100px"></div>

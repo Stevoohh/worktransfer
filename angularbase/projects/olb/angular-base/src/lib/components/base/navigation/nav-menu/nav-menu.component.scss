@@ -1,0 +1,112 @@
+@use "colors" as olb-colors;
+
+.banner-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  //   white-space: nowrap;
+}
+
+/* Horizontal scrollable banner menu when placed in banner */
+.banner-menu-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  //   white-space: nowrap;
+}
+
+.banner-menu-viewport {
+  position: relative;
+  // overflow: hidden; //overflow: auto hidden; für den Fall das die Scrollbar angezeigt werden soll
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overflow-y: hidden; // sicherheitshalber
+  // Scrollbar verstecken, aber trotzdem scrollbar machen
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE, Edge Legacy
+  border-radius: 15px;
+}
+
+.banner-menu-viewport::-webkit-scrollbar {
+  display: none; // Chrome, Safari, neuer Edge
+}
+
+.banner-menu-viewport .banner-menu {
+  flex-wrap: nowrap;
+  //   white-space: nowrap;
+}
+
+.scroll-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  cursor: pointer;
+}
+.scroll-btn.hidden {
+  visibility: hidden;
+}
+
+.banner-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  background-color: olb-colors.$secondary;
+  color: #dddddd;
+  cursor: pointer;
+  flex: 0 0 auto; /* Button soll sich nicht ausdehnen */
+  white-space: nowrap;
+}
+.banner-item:hover {
+  color: #fff;
+}
+
+.banner-item.active {
+  color: olb-colors.$primary-text;
+  background-color: olb-colors.$primary;
+}
+.banner-item.ancestor-active {
+  color: olb-colors.$primary-text;
+  background-color: olb-colors.$primary;
+}
+
+.btn-scrollmenu {
+  overflow: visible;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  min-width: 22px;
+  padding: 0 8px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+.badge.neutral {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.badge.info {
+  background: #ffebee;
+  color: #d32f2f;
+}
+.badge.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.badge.warn {
+  background: #fff8e1;
+  color: #f57c00;
+}

@@ -1,0 +1,162 @@
+@use "@angular/material" as mat;
+@use "colors" as olb-colors;
+
+/*
+  This file includes material overwrites
+ */
+.mat-mdc-tooltip .mdc-tooltip__surface {
+  color: white;
+  box-shadow:
+    0 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  font-size: 16px;
+}
+
+// so overlays are above the navbar
+.mat-select-panel,
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}
+
+@media screen and (max-width: 600px) {
+  .cdk-overlay-pane {
+    max-width: 90vw !important;
+  }
+}
+
+// Allow the select dropdown to expand its width to fit its content
+.cdk-overlay-pane:has(.mat-mdc-select-panel) {
+  width: unset !important;
+}
+// Allow the autocomplete select dropdown to expand its width to fit its content
+.cdk-overlay-pane:has(.mat-mdc-autocomplete-panel) {
+  width: unset !important;
+}
+
+// Set width of the sidebar to auto, so it will be max width of item width
+.mat-drawer {
+  --mat-sidenav-container-width: auto;
+}
+
+@function _light_dark_color($light, $dark, $theme-type) {
+  @if ($theme-type == light) {
+    @return $light;
+  }
+  @if ($theme-type == dark) {
+    @return $dark;
+  }
+  @if ($theme-type == color-scheme) {
+    @return light-dark(#{$light}, #{$dark});
+  }
+
+  @error 'Unknown theme-type #{$theme-type}. Expected light, dark, or color-scheme';
+}
+
+@mixin color-overrides($theme-type) {
+  @include mat.theme-overrides(
+    (
+      surface-bright: _light_dark_color(#f5f7f9, #002d1d, $theme-type)
+    )
+  );
+}
+
+// Components
+:root {
+  smc-simplemattable {
+    .smt-button-edit {
+      color: olb-colors.$orange;
+    }
+    .smt-button-add {
+      color: olb-colors.$green;
+    }
+    .smt-button-delete-all {
+      color: olb-colors.$red;
+    }
+    .smt-button-cancel {
+      color: olb-colors.$red;
+    }
+    .smt-button-delete {
+      color: olb-colors.$red;
+    }
+  }
+
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: _light_dark_color(#f5f7f9, #0d0f0e, color-scheme),
+      content-background-color: _light_dark_color(#f5f7f9, #0d0f0e, color-scheme),
+      content-text-color: _light_dark_color(#0d0f0e, #f5f7f9, color-scheme),
+      container-divider-color: _light_dark_color(#d9d9d9, #292929, color-scheme),
+      container-shape: 1px solid
+    )
+  );
+
+  @include mat.list-overrides(
+    (
+      list-item-label-text-size: 16px,
+      list-item-label-text-line-height: 24px,
+      list-item-label-text-weight: 400
+    )
+  );
+
+  @include mat.toolbar-overrides(
+    (
+      container-text-color: olb-colors.$olb-color-foreground-primary
+    )
+  );
+
+  .primary-button {
+    @include mat.button-overrides(
+      (
+        filled-container-color: olb-colors.$olb-color-foreground-accent,
+        protected-container-color: olb-colors.$olb-color-foreground-accent,
+        outlined-outline-color: olb-colors.$olb-color-foreground-accent,
+        protected-label-text-color: _light_dark_color(olb-colors.$olb-color-foreground-primary, olb-colors.$olb-color-foreground-primary, color-scheme),
+        filled-label-text-color: _light_dark_color(olb-colors.$olb-color-foreground-primary, olb-colors.$olb-color-foreground-primary, color-scheme),
+        outlined-label-text-color: _light_dark_color(olb-colors.$olb-color-foreground-primary, #fff, color-scheme),
+        text-label-text-color: _light_dark_color(olb-colors.$olb-color-foreground-primary, #fff, color-scheme)
+      )
+    );
+  }
+  .secondary-button {
+    @include mat.button-overrides(
+      (
+        filled-container-color: olb-colors.$secondary,
+        protected-container-color: olb-colors.$secondary,
+        outlined-outline-color: olb-colors.$secondary,
+        protected-label-text-color: olb-colors.$secondary-text
+      )
+    );
+  }
+  .accent-button {
+    @include mat.button-overrides(
+      (
+        filled-container-color: olb-colors.$accent,
+        protected-container-color: olb-colors.$accent,
+        outlined-outline-color: olb-colors.$accent,
+        protected-label-text-color: olb-colors.$accent-text
+      )
+    );
+  }
+  .error-button {
+    @include mat.button-overrides(
+      (
+        filled-container-color: olb-colors.$error,
+        protected-container-color: olb-colors.$error,
+        outlined-outline-color: olb-colors.$error,
+        protected-label-text-color: olb-colors.$error-text
+      )
+    );
+  }
+  .warn-button {
+    @include mat.button-overrides(
+      (
+        filled-container-color: olb-colors.$warn,
+        protected-container-color: olb-colors.$warn,
+        outlined-outline-color: olb-colors.$warn,
+        protected-label-text-color: olb-colors.$warn-text
+      )
+    );
+  }
+}

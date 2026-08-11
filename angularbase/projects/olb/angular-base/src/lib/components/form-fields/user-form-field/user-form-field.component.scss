@@ -1,0 +1,15 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+.example-container > * {
+  width: 100%;
+}
+
+mat-error {
+  line-height: 1.15;
+}
+
+::ng-deep .olb-user-formfield .mat-mdc-form-field-error-wrapper {
+  transform: translateY(-35%) !important;
+}

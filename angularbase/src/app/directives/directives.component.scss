@@ -1,0 +1,21 @@
+.result {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+
+  div {
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.03);
+    color: #000000de;
+    margin: 0;
+  }
+}
+
+mat-slide-toggle {
+  margin-top: 20px;
+}
+
+::ng-deep mat-form-field {
+  width: 450px;
+}

@@ -1,0 +1,188 @@
+// Import der Angular Material Theming Funktionen
+@use "@angular/material" as mat;
+@use "colors" as olb-colors;
+@use "typography" as olb-typography;
+@use "overwrites" as olb-overwrites;
+@use "custom" as olb-custom;
+
+@include mat.elevation-classes();
+@include mat.app-background();
+
+/* These tokens are generated using https://themes.angular-material.dev/ */
+/* Preview: https://themes.angular-material.dev/?background=%23fff&primary=%23005f3d&primary-container=%23baff79&secondary=%23008858&seed-error=%23ba1a1a&seed-neutral=%2333574a&seed-neutral-variant=%2333574a&seed-primary=%23005f3d&seed-secondary=%23baff79&seed-tertiary=%23006982&surface=%23fff&surface-bright=%23f9f9f7&surface-container=%23f9f9f7&surface-container-high=%23f9f9f7&surface-container-highest=%23e3e2e1&surface-container-low=%23fff&surface-variant=%23fff */
+/* Seed Colors: primary: #005f3d, secondary: #baff79, tertiary: #006982, error: #ba1a1a, neutral: #33574a, neutral-variant: #33574a */
+/* Modified System Colors: background: #fff, primary: #005f3d, primary-container: #baff79, secondary: #008858, surface: #fff, surface-bright: #f9f9f7, surface-container-high: #f9f9f7, surface-container-highest: #e3e2e1, surface-container-low: #fff, surface-variant: #fff, surface-container: #f9f9f7 */
+
+/* Light Theme */
+:root,
+:host {
+  @include mat.theme-overrides(
+    (
+      primary: #005f3d,
+      on-primary: #ffffff,
+      primary-container: #baff79,
+      on-primary-container: #002112,
+      inverse-primary: #89d7ac,
+      primary-fixed: #a4f3c6,
+      primary-fixed-dim: #89d7ac,
+      on-primary-fixed: #002112,
+      on-primary-fixed-variant: #005234,
+      secondary: #008858,
+      on-secondary: #ffffff,
+      secondary-container: #b1f671,
+      on-secondary-container: #0d2000,
+      secondary-fixed: #b1f671,
+      secondary-fixed-dim: #97d958,
+      on-secondary-fixed: #0d2000,
+      on-secondary-fixed-variant: #2a5000,
+      tertiary: #006780,
+      on-tertiary: #ffffff,
+      tertiary-container: #b7eaff,
+      on-tertiary-container: #001f28,
+      tertiary-fixed: #b7eaff,
+      tertiary-fixed-dim: #85d1ed,
+      on-tertiary-fixed: #001f28,
+      on-tertiary-fixed-variant: #004e61,
+      background: #fff,
+      on-background: #1a1c1b,
+      surface: #fff,
+      surface-dim: #dadad8,
+      surface-bright: #f9f9f7,
+      surface-container-lowest: #ffffff,
+      surface-container-low: #fff,
+      surface-container: #f9f9f7,
+      surface-container-high: #f9f9f7,
+      surface-container-highest: #e3e2e1,
+      on-surface: #1a1c1b,
+      shadow: #000000,
+      scrim: #000000,
+      surface-tint: #416658,
+      inverse-surface: #2f312f,
+      inverse-on-surface: #f1f1ee,
+      outline: #717975,
+      outline-variant: #c1c8c3,
+      neutral: #767775,
+      neutral10: #1a1c1b,
+      error: #ba1a1a,
+      error-container: #ffdad6,
+      on-error: #ffffff,
+      on-error-container: #410002,
+      surface-variant: #fff,
+      on-surface-variant: #414845,
+      neutral-variant: #717975,
+      neutral-variant20: #2b322f,
+      inverse-secondary: #97d958,
+      inverse-tertiary: #85d1ed
+    )
+  );
+}
+
+/* Dark Theme */
+.dark-theme {
+  @include mat.theme-overrides(
+    (
+      primary: #005f3d,
+      on-primary: #003822,
+      primary-container: #baff79,
+      on-primary-container: #a4f3c6,
+      inverse-primary: #186b48,
+      primary-fixed: #a4f3c6,
+      primary-fixed-dim: #89d7ac,
+      on-primary-fixed: #002112,
+      on-primary-fixed-variant: #005234,
+      secondary: #008858,
+      on-secondary: #1b3700,
+      secondary-container: #2a5000,
+      on-secondary-container: #b1f671,
+      secondary-fixed: #b1f671,
+      secondary-fixed-dim: #97d958,
+      on-secondary-fixed: #0d2000,
+      on-secondary-fixed-variant: #2a5000,
+      tertiary: #85d1ed,
+      on-tertiary: #003543,
+      tertiary-container: #004e61,
+      on-tertiary-container: #b7eaff,
+      tertiary-fixed: #b7eaff,
+      tertiary-fixed-dim: #85d1ed,
+      on-tertiary-fixed: #001f28,
+      on-tertiary-fixed-variant: #004e61,
+      background: #fff,
+      on-background: #e2e3e0,
+      surface: #fff,
+      surface-dim: #121413,
+      surface-bright: #f9f9f7,
+      surface-container-lowest: #0d0f0e,
+      surface-container-low: #fff,
+      surface-container: #f9f9f7,
+      surface-container-high: #f9f9f7,
+      surface-container-highest: #e3e2e1,
+      on-surface: #e2e3e0,
+      shadow: #000000,
+      scrim: #000000,
+      surface-tint: #a8cfbe,
+      inverse-surface: #e2e3e0,
+      inverse-on-surface: #2f312f,
+      outline: #8b928e,
+      outline-variant: #414845,
+      neutral: #767775,
+      neutral10: #1a1c1b,
+      error: #ffb4ab,
+      error-container: #93000a,
+      on-error: #690005,
+      on-error-container: #ffdad6,
+      surface-variant: #fff,
+      on-surface-variant: #c1c8c3,
+      neutral-variant: #717975,
+      neutral-variant20: #2b322f,
+      inverse-secondary: #3a6a00,
+      inverse-tertiary: #006780
+    )
+  );
+}
+// auto. generated token end
+
+html {
+  height: 100vh;
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: (
+        primary: olb-colors.$primary-palette,
+        tertiary: olb-colors.$tertiary-palette
+      ),
+      typography: (
+        plain-family: GalanoNeue,
+        brand-family: GalanoNeue,
+        bold-weight: 500,
+        medium-weight: 300,
+        regular-weight: 200
+      ),
+      density: 0
+    )
+  );
+
+  // Use high contrast values when users prefer contrast
+  @media (prefers-contrast: more) {
+    @include olb-colors.high-contrast-overrides(color-scheme);
+  }
+
+  // Custom overwrites
+  @include olb-overwrites.color-overrides(color-scheme);
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+  font-family: "GalanoNeue", "Roboto", sans-serif;
+}
+
+body.dark-theme {
+  color-scheme: light;
+}
+
+body.light-theme {
+  color-scheme: light;
+}

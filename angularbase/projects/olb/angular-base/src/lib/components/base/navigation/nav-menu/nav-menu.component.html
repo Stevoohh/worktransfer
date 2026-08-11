@@ -1,0 +1,37 @@
+<div class="banner-menu-wrapper">
+  <button class="scroll-btn left" (click)="scrollBannerMenu(-1)" [class.hidden]="!canScrollLeft()" aria-label="Nach links scrollen">
+    <mat-icon class="btn-scrollmenu">chevron_left</mat-icon>
+  </button>
+  <div class="banner-menu-viewport" #bannerMenuViewport (scroll)="onBannerMenuScroll()">
+    <div class="banner-menu">
+      @for (item of menu(); track $index) {
+        @if (isItem(item)) {
+          @if (!item.children?.length) {
+            <button class="banner-item" [class.active]="isActive(item)" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route, item.anchor)">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.label }}</span>
+              @if (item.badge) {
+                <span class="badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+              }
+            </button>
+          } @else {
+            <button class="banner-item" [class.active]="isActive(item)" [class.ancestor-active]="isAncestorActive(item)" [matMenuTriggerFor]="menuRef">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.label }}</span>
+              @if (item.badge) {
+                <span class="badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+              }
+              <mat-icon>expand_more</mat-icon>
+            </button>
+            <mat-menu #menuRef="matMenu">
+              <olb-nav-menu-child-items [items]="item.children || []"></olb-nav-menu-child-items>
+            </mat-menu>
+          }
+        }
+      }
+    </div>
+  </div>
+  <button class="scroll-btn right" (click)="scrollBannerMenu(1)" [class.hidden]="!canScrollRight()" aria-label="Nach rechts scrollen">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

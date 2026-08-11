@@ -1,0 +1,37 @@
+@for (node of nodes(); track $index) {
+  @if (isHeading(node)) {
+    @if (isExpanded()) {
+      <li class="menu-heading">{{ node.heading }}</li>
+    }
+  } @else {
+    <li class="menu-item" [class.active]="isActive(node)" [class.ancestor-active]="isAncestorActive(node)">
+      <div
+        class="menu-row"
+        [class.clickable]="node.children?.length"
+        (click)="onParentClick(node)"
+        [routerLink]="!node.children?.length && node.route ? node.route : null"
+        role="navigation"
+        (keyup)="onParentClick(node)"
+      >
+        <mat-icon class="menu-icon">{{ node.icon }}</mat-icon>
+        @if (isExpanded()) {
+          <span class="menu-label">{{ node.label }}</span>
+          <span class="spacer"></span>
+          @if (node.badge) {
+            <span class="badge" [class]="'badge ' + (node.badgeVariant || 'neutral')">{{ node.badge }}</span>
+          }
+          @if (node.children?.length) {
+            <mat-icon>{{ node.expanded ? "expand_less" : "expand_more" }}</mat-icon>
+          }
+        }
+      </div>
+
+      @if (node.children?.length && node.expanded && isExpanded()) {
+        <ul class="submenu">
+          <olb-nav-tree-items [nodes]="node.children || []" [isExpanded]="isExpanded()" [currentUrl]="currentUrl()" (toggleRequested)="toggleRequested.emit()">
+          </olb-nav-tree-items>
+        </ul>
+      }
+    </li>
+  }
+}

@@ -1,0 +1,8 @@
+<div
+  [matBadge]="taskCountDisplay"
+  [matBadgeHidden]="_taskCount === undefined"
+  [matBadgeOverlap]="overlap"
+  [matBadgeColor]="(_taskCount || 0) > 100 ? 'warn' : (_taskCount || 0) > 10 ? 'accent' : 'primary'"
+>
+  <ng-content></ng-content>
+</div>

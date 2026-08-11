@@ -1,0 +1,17 @@
+{
+  "/nexus": {
+    "target": "https://nexus.olb.de:8443",
+    "secure": false,
+    "ws": true,
+    "pathRewrite": {
+      "^/nexus": ""
+    }
+  },
+  "/api": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "ws": true,
+    "pathRewrite": { "^/api": "" }
+  },
+  "/oauth2": { "target": "http://localhost:8080", "secure": false, "ws": true }
+}

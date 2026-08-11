@@ -1,0 +1,180 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "@olb/angular-base": {
+      "projectType": "library",
+      "root": "projects/olb/angular-base",
+      "sourceRoot": "projects/olb/angular-base/src",
+      "prefix": "olb",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "projects/olb/angular-base/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/olb/angular-base/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/olb/angular-base/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/olb/angular-base/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "inlineStyleLanguage": "scss",
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/olb/angular-base/eslint.config.js",
+            "lintFilePatterns": ["projects/olb/angular-base/src/**/*.ts", "projects/olb/angular-base/src/**/*.html"]
+          }
+        }
+      }
+    },
+    "@olb/demo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/olb/demo"
+            },
+            "index": "src/index.html",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": ["exceljs", "moment", "fast-xml-parser", "file-saver", "jspdf", "jspdf-autotable", "raf", "core-js", "rgbcolor"],
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/olb/angular-base/assets",
+                "output": "/assets/"
+              }
+            ],
+            "styles": ["projects/olb/angular-base/assets/styles/_themes.scss", "src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets/styles", "projects/olb/angular-base/assets/styles/", "@olb/angular-base/assets/styles/"]
+            },
+            "scripts": [],
+            "browser": "src/main.ts"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "12kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "@olb/demo:build:production"
+            },
+            "development": {
+              "buildTarget": "@olb/demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n",
+          "options": {
+            "buildTarget": "@olb/demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["@angular/material/prebuilt-themes/indigo-pink.css", "projects/olb/angular-base/assets/styles/theme.scss", "src/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets/styles", "projects/olb/angular-base/assets/styles/"]
+            },
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
+  }
+}

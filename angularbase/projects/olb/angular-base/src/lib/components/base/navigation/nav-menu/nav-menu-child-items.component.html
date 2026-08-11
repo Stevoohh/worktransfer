@@ -1,0 +1,23 @@
+@for (item of items(); track item.label) {
+  @if (!item.children?.length) {
+    <button mat-menu-item [class.active]="isActive(item)" (click)="item.externalUrl ? openExternal(item) : navigateTo(item.route, item.anchor)">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+      @if (item.badge) {
+        <span class="badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+      }
+    </button>
+  } @else {
+    <button mat-menu-item [class.active]="isActive(item)" [class.ancestor-active]="isAncestorActive(item)" [matMenuTriggerFor]="subMenuRef">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.label }}</span>
+      @if (item.badge) {
+        <span class="badge" [class]="'badge ' + (item.badgeVariant || 'neutral')">{{ item.badge }}</span>
+      }
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <mat-menu #subMenuRef="matMenu">
+      <olb-nav-menu-child-items [items]="item.children || []"></olb-nav-menu-child-items>
+    </mat-menu>
+  }
+}

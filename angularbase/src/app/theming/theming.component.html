@@ -1,0 +1,220 @@
+<h1>Themen</h1>
+<h2>Corporate Design / Identity</h2>
+<p>Das aktuelle CD ist hier hinterlegt <a href="https://olb.frontify.com/">https://olb.frontify.com/</a></p>
+<a href="https://github.com/angular/components/blob/main/src/material/schematics/ng-generate/theme-color/README.md">Palette generation schematic</a><br />
+<a
+  href="https://themes.angular-material.dev/?background=%23fff&primary=%23005f3d&primary-container=%23baff79&secondary=%23008858&seed-error=%23ba1a1a&seed-neutral=%2333574a&seed-neutral-variant=%2333574a&seed-primary=%23005f3d&seed-secondary=%23baff79&seed-tertiary=%23006982&surface=%23fff&surface-bright=%23f9f9f7&surface-container-high=%23f9f9f7&surface-container-highest=%23e3e2e1&surface-container-low=%23fff&surface-variant=%23fff"
+  >Theme Builder</a
+  >
+  <p>Darauf basierend ist das Material Theme implementiert</p>
+  <!-- <h2>Light & Dark Theme</h2>
+  <p>
+    Das Theme ist in einer Light & Dark Variante hinterlegt, welches zur laufzeit umgeschaltet werden kann.<br />Dazu einfach den ThemeService injecten und
+    themeService.toggleTheme() aufrufen
+  </p>
+  <pre>Der zuletzt eingestellte Modus wird im Browser gespeichert und beim nächsten Start automatisch geladen</pre>
+  <div class="theme-toggle-container">
+    <button mat-icon-button (click)="themeService.toggleTheme()">
+      <mat-icon>
+        {{ themeService.darkTheme() ? "dark_mode" : "light_mode" }}
+      </mat-icon>
+    </button>
+    @if (themeService.darkTheme()) {
+      <p style="margin-left: 5px">dark theme</p>
+    } @else {
+      <p style="margin-left: 5px">light theme</p>
+    }
+  </div> -->
+  <h2>Logo</h2>
+  <p>Die aktuellen Logos / Icons aus dem CD <br />Entweder aus der angular-base oder dem CD kopieren</p>
+  <div class="logos">
+    <img src="assets/images/OLB_Logo_pos_RGB.svg" width="120px" alt="olb logo" />
+    <img src="assets/images/OLB_Superzeichen_pos_RGB.svg" width="120px" alt="olb superzeichen" />
+    <!-- @if (themeService.darkTheme()) {
+    <img src="assets/images/OLB_Logo_neg_RGB.svg" width="120px" alt="olb logo negativ" />
+    <img src="assets/images/OLB_Superzeichen_neg_RGB.svg" width="120px" alt="olb superzeichen negativ" />
+  } @else {
+    <img src="assets/images/OLB_Logo_pos_RGB.svg" width="120px" alt="olb logo" />
+    <img src="assets/images/OLB_Superzeichen_pos_RGB.svg" width="120px" alt="olb superzeichen" />
+    } -->
+  </div>
+  <h2>Favicon</h2>
+  <p>Das aktuelle OLB Logo als Icon</p>
+  <pre>
+    Das Icon kann direkt aus den assets verlinkt werden sofern diese in der angular.json unter "assets" angegeben sind. Die Größe sollte mit 16x16 angegeben werden.</pre
+    >
+    <pre>assets/images/favicon.ico</pre>
+    <div class="logos">
+      <img src="assets/images/favicon.ico" alt="olb favicon" width="32px" height="32px" />
+    </div>
+    <h2>Farben</h2>
+    <p>Um die vordefininierten Farben verwenden zu können, muss die _color.scss importiert werden.</p>
+    <pre>Aktuell muss noch der gesamte Pfad importiert werden. Die 'stylePreprocessorOptions.includePaths' funktionieren nicht.</pre>
+    <app-code [scss]="colorsScss" title="OLB Farben verwenden"></app-code>
+    <div class="colors">
+      <h3>Basisfarben</h3>
+      <p>Body Hintergrundfarbe und Schriftfarbe für Seiteninhalte (ist Standard und muss nicht explizit gesetzt)</p>
+      <mat-card
+        class="color-card base-colors"
+        appearance="outlined"
+    style="
+      width: 800px;
+      height: 100px;
+      border: 1px solid;
+      background-color: var(--mat-sys-surface-container-lowest);
+      color: var(--mat-sys-on-surface);
+      align-items: center;
+    "
+        >
+        <mat-card-header>
+          <mat-card-title><p>Seitenfarben</p></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Seitenhintergrundfarbe <b>$surface</b><br />Textfarbe <b>$on-surface</b></p>
+        </mat-card-content>
+      </mat-card>
+      <div></div>
+      <p>
+        Im wesentlichem sind die Basisfarben zu verwenden. Diese können einfach per scss variable mit dem $-Prefix verwendet werden. Falls notwendig können auch die
+        zugrunde liegenden Material css Variabeln benutzt werden wie z.B. --mat-sys-background. Hierbei aber nicht vergessen die Variablen in das var mixing,
+        var(--meineVar) zu schreiben.
+      </p>
+      <div class="base-colors">
+        <mat-card class="primary" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title><p>Primary color</p></mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="color-card">
+            <p>$primary für den Hintergrund</p>
+            <p>$primary-text für den Text</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="secondary" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title><p>Secondary color</p></mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="color-card">
+            <p>$secondary für den Hintergrund</p>
+            <p>$secondary-text für den Text</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="accent" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title><p>Accent color</p></mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="color-card">
+            <p>$accent für den Hintergrund</p>
+            <p>$accent-text für den Text</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="warn" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title><p>Warn color</p></mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="color-card">
+            <p>$warn für den Hintergrund</p>
+            <p>$warn-text für den Text</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="error" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title><p>Error color</p></mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="color-card">
+            <p>$error für den Hintergrund</p>
+            <p>$error-text für den Text</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="info" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title><p>Info color</p></mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="color-card">
+            <p>$info für den Hintergrund</p>
+            <p>$info-text für den Text</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <h3>Einfache Farben</h3>
+      <p>Einfache Farben adaptiert aus dem OLB Design</p>
+      <div class="simple-colors-container">
+        @for (simpleColor of simpleColors; track simpleColor) {
+          <mat-card class="small-color-card" [style]="'background-color:' + simpleColor.value" appearance="outlined">
+            <mat-card-content>{{ simpleColor.variable }}</mat-card-content>
+          </mat-card>
+        }
+      </div>
+      <h3>System Farben (MD3 System Tokens)</h3>
+      <p>Alle Material Theme Farben die im Browser geladen werden und mittels css Variable verwendet werden können</p>
+      <a href="https://material.angular.io/guide/system-variables" style="margin-bottom: 10px">Material System Variables</a>
+      <div class="all-colors-container">
+        @for (materialSystemColor of materialSystemColors; track materialSystemColor) {
+          <mat-card
+            class="small-color-card"
+            [style]="'background-color: var(' + materialSystemColor + ')'"
+            appearance="outlined"
+            >
+            <mat-card-content>{{ materialSystemColor }}</mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+    <h2>Schriftarten</h2>
+    <p>Font Formate sind für die üblichen html-Elemente bereits hinterlegt.</p>
+    <div>
+      <p>Inhalt eines paragraph (p)</p>
+      <span>Inhalt eines span</span>
+      <div>Inhalt eines div</div>
+      <ul>
+        <li>Listeneintrag (li)</li>
+      </ul>
+      <h1>h1</h1>
+      <h2>h2</h2>
+      <h3>h3</h3>
+      <h4>h4</h4>
+      <h5>h5</h5>
+      <p>
+        Wenn das nicht reicht können die im Theme hinterlegten Styles verwendent werden. Diese sind für verschiedene Anwenungsbereiche in small, medium und large
+        hinterlegt: <br />
+        <a href="https://material.angular.io/guide/system-variables" style="margin-bottom: 10px">Material System Variables</a>
+      </p>
+      <p><b>Hier ein paar Auszüge</b></p>
+      <p style="font: var(--mat-sys-body-small)">--mat-sys-body-small</p>
+      <p style="font: var(--mat-sys-headline-large)">--mat-sys-headline-large</p>
+    </div>
+    <div>
+      <h2>Komponenten</h2>
+      <p>Material Komponenten müssen mit extra Klassen implementiert werden um Farbtöne darzustellen</p>
+      <div>
+        <h4>Button Farben</h4>
+        <div class="demo-buttons">
+          <div>
+            <button mat-raised-button class="primary-button">Primary</button>
+            <pre>class="primary-button"</pre>
+          </div>
+          <div>
+            <button mat-raised-button class="secondary-button">Secondary</button>
+            <pre>class="secondary-button"</pre>
+          </div>
+          <div>
+            <button mat-raised-button class="accent-button">Accent</button>
+            <pre>class="accent-button"</pre>
+          </div>
+          <div>
+            <button mat-raised-button class="warn-button">Warn</button>
+            <pre>class="warn-button"</pre>
+          </div>
+          <div>
+            <button mat-raised-button class="error-button">Error</button>
+            <pre>class="error-button"</pre>
+          </div>
+        </div>
+        <h4>Button Typen mit Standard Primary Farbe</h4>
+        <div class="demo-buttons">
+          <button mat-button class="primary-button">Primary</button>
+          <button mat-stroked-button class="primary-button">Primary Stroked</button>
+          <button mat-flat-button class="primary-button">Primary Flat</button>
+          <button mat-raised-button class="primary-button">Primary Raised</button>
+        </div>
+      </div>
+    </div>
