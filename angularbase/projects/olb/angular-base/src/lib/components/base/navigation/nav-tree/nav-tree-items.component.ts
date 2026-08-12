@@ -1,5 +1,5 @@
 import { ViewportScroller } from "@angular/common";
-import { ChangeDetectionStrategy, Component, effect, inject, input, output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 import { Router, RouterLink } from "@angular/router";
 import { MenuHeading } from "../menu-heading";
@@ -19,19 +19,24 @@ export class NavTreeItemsComponent {
   currentUrl = input<string>("");
   readonly toggleRequested = output<void>();
 
+  /** Erhöht sich nach Auto-Expand, damit das Template neu gerendert wird. */
+  protected readonly expandRevision = signal(0);
+
   constructor(private readonly router: Router) {}
   private readonly viewportScroller = inject(ViewportScroller);
 
   // Auto-expand any ancestor nodes whose subtree contains the current URL
   private readonly autoExpandEffect = effect(() => {
-    const url = this.currentUrl();
+    const url = this.normalizeUrl(this.currentUrl());
     const items = this.nodes();
 
     if (!url || !Array.isArray(items) || items.length === 0) {
       return;
     }
 
-    this.expandAncestorsForUrl(items);
+    if (this.expandAncestorsForUrl(items, url)) {
+      this.expandRevision.update(v => v + 1);
+    }
   });
 
   protected isHeading(item: any): item is MenuHeading {
@@ -46,20 +51,22 @@ export class NavTreeItemsComponent {
     if (!node.children?.length) return;
     if (!this.isExpanded()) {
       node.expanded = true;
+      this.expandRevision.update(v => v + 1);
       return;
     }
     node.expanded = !node.expanded;
+    this.expandRevision.update(v => v + 1);
   }
 
   protected onParentClick(node: any): void {
-    console.log("##############onParentClick node: ", node);
     if (node?.children?.length) {
       if (!this.isExpanded()) {
         // Open sidenav first, then toggle this node and navigate if route exists
         this.toggleRequested.emit();
         node.expanded = !node.expanded;
+        this.expandRevision.update(v => v + 1);
         if (node.route) {
-          this.router.navigateByUrl(node.route);
+          this.router.navigateByUrl(this.resolveRoute(node.route));
         }
         return;
       }
@@ -80,6 +87,31 @@ export class NavTreeItemsComponent {
     }
   }
 
+  /** Ersetzt :param-Segmente durch aktuelle Router-Params (Fallback: Param-Name ohne ':'). */
+  protected resolveRoute(route: string): string {
+    const params = this.collectRouteParams();
+    const resolved = this.getSegments(route)
+      .map(segment => {
+        if (!segment.startsWith(":")) {
+          return segment;
+        }
+        const paramName = segment.slice(1);
+        return params[paramName] ?? paramName;
+      })
+      .join("/");
+    return route.startsWith("/") ? `/${resolved}` : resolved;
+  }
+
+  private collectRouteParams(): Record<string, string> {
+    const params: Record<string, string> = {};
+    let route = this.router.routerState.snapshot.root;
+    while (route) {
+      Object.assign(params, route.params);
+      route = route.firstChild!;
+    }
+    return params;
+  }
+
   protected openExternal(node: any): void {
     if (node?.externalUrl) {
       window.open(node.externalUrl, "_blank", "noopener");
@@ -87,22 +119,19 @@ export class NavTreeItemsComponent {
   }
 
   protected isActive(node: MenuItem): boolean {
-    // return !!node?.route && this.currentUrl() === node.route;
     if (!node?.route) {
       return false;
     }
 
-    return this.matchesRoute(node.route);
+    return this.matchesRoute(node.route, this.normalizeUrl(this.currentUrl()));
   }
 
   protected isAncestorActive(node: any): boolean {
     if (!node?.children?.length) return false;
-    return this.hasDescendantWithRoute(node, this.currentUrl());
+    return this.hasDescendantWithRoute(node, this.normalizeUrl(this.currentUrl()));
   }
 
-  private matchesRoute(route: string): boolean {
-    const currentUrl = this.router.url.split("?")[0].split("#")[0];
-
+  private matchesRoute(route: string, currentUrl: string): boolean {
     const routeSegments = this.getSegments(route);
     const currentSegments = this.getSegments(currentUrl);
 
@@ -120,6 +149,10 @@ export class NavTreeItemsComponent {
     });
   }
 
+  private normalizeUrl(url: string): string {
+    return (url || "").split("?")[0].split("#")[0];
+  }
+
   private getSegments(url: string): string[] {
     return url.split("/").filter(Boolean);
   }
@@ -127,46 +160,51 @@ export class NavTreeItemsComponent {
   private hasDescendantWithRoute(node: any, url: string): boolean {
     if (!node?.children?.length) return false;
     for (const child of node.children) {
-      if (child?.route && child.route === url) return true;
+      if (child?.route && this.matchesRoute(child.route, url)) return true;
       if (child?.children?.length && this.hasDescendantWithRoute(child, url)) return true;
     }
     return false;
   }
 
-  private expandAncestorsForUrl(nodes: (MenuItem | MenuHeading)[]): boolean {
-    let foundInThisLevel = false;
+  /**
+   * Klappt alle Vorfahren eines zur URL passenden Menüeintrags auf.
+   * @returns true, wenn mindestens ein `expanded`-Flag neu gesetzt wurde
+   */
+  private expandAncestorsForUrl(nodes: (MenuItem | MenuHeading)[], url: string): boolean {
+    let changed = false;
 
     for (const node of nodes) {
       if (this.isHeading(node)) {
         continue;
       }
 
-      let foundHere = false;
-
-      if (this.isActive(node)) {
-        foundHere = true;
-      } else if (node.children?.length) {
-        const foundInChildren = this.expandAncestorsForUrl(node.children);
-
-        if (foundInChildren) {
-          node.expanded = true;
-          foundHere = true;
-        }
+      if (!node.children?.length) {
+        continue;
       }
 
-      foundInThisLevel ||= foundHere;
+      const childChanged = this.expandAncestorsForUrl(node.children, url);
+      changed ||= childChanged;
+
+      const shouldExpand =
+        this.matchesRoute(node.route || "", url) || this.hasDescendantWithRoute(node, url);
+
+      if (shouldExpand && !node.expanded) {
+        node.expanded = true;
+        changed = true;
+      }
     }
 
-    return foundInThisLevel;
+    return changed;
   }
 
   private navigateWithAnchor(route: string, anchor?: string): void {
+    const resolvedRoute = this.resolveRoute(route);
     if (!anchor) {
-      this.router.navigateByUrl(route);
+      this.router.navigateByUrl(resolvedRoute);
       return;
     }
     const currentPath = window?.location?.pathname || "";
-    const navigate = currentPath !== route ? this.router.navigateByUrl(route + "#" + anchor) : Promise.resolve(true);
+    const navigate = currentPath !== resolvedRoute ? this.router.navigateByUrl(resolvedRoute + "#" + anchor) : Promise.resolve(true);
     navigate.then(() => {
       setTimeout(() => this.viewportScroller.scrollToAnchor(anchor), 0);
     });

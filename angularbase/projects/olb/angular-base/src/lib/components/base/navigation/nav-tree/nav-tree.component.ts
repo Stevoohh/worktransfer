@@ -22,9 +22,9 @@ export class NavTreeComponent {
   protected currentUrl = signal<string>("");
 
   constructor() {
-    this.currentUrl.set(window?.location?.pathname || "");
+    this.currentUrl.set((window?.location?.pathname || "").split("?")[0].split("#")[0]);
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      const url = event.urlAfterRedirects;
+      const url = event.urlAfterRedirects.split("?")[0].split("#")[0];
       this.currentUrl.set(url);
     });
   }

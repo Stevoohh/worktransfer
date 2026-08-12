@@ -26,21 +26,25 @@ const routes: Routes = [
     component: OlbBaseDemoComponent,
     children: [
       {
-        path: ":id",
-        children: [
-          {
-            path: "overview",
-            component: DeepLinkComponent
-          }
-        ]
-      },
-      {
         path: "deeplink",
         component: DeepLinkComponent
       },
       {
         path: "anotherdeeplink",
         component: DeepLinkComponent
+      },
+      {
+        path: ":id",
+        children: [
+          {
+            path: "overview",
+            component: DeepLinkComponent
+          },
+          {
+            path: "anotherdeeplink",
+            component: DeepLinkComponent
+          }
+        ]
       }
     ]
   },

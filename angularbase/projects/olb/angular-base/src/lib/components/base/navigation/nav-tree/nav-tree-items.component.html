@@ -9,7 +9,7 @@
         class="menu-row"
         [class.clickable]="node.children?.length"
         (click)="onParentClick(node)"
-        [routerLink]="!node.children?.length && node.route ? node.route : null"
+        [routerLink]="!node.children?.length && node.route ? resolveRoute(node.route) : null"
         role="navigation"
         (keyup)="onParentClick(node)"
       >
@@ -26,7 +26,7 @@
         }
       </div>
 
-      @if (node.children?.length && node.expanded && isExpanded()) {
+      @if (expandRevision() >= 0 && node.children?.length && node.expanded && isExpanded()) {
         <ul class="submenu">
           <olb-nav-tree-items [nodes]="node.children || []" [isExpanded]="isExpanded()" [currentUrl]="currentUrl()" (toggleRequested)="toggleRequested.emit()">
           </olb-nav-tree-items>

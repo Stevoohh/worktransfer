@@ -1,5 +1,5 @@
 import { ViewportScroller } from "@angular/common";
-import { Component, inject, input, signal, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, input, signal } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { NavigationEnd, Router } from "@angular/router";
@@ -21,12 +21,9 @@ export class NavMenuChildItemsComponent {
   private readonly viewportScroller = inject(ViewportScroller);
 
   constructor() {
-    // Initialize current url
-    this.currentUrl.set(window?.location?.pathname || "");
-    // Keep url updated
+    this.currentUrl.set(this.normalizeUrl(window?.location?.pathname || ""));
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      const url = event.urlAfterRedirects;
-      this.currentUrl.set(url);
+      this.currentUrl.set(this.normalizeUrl(event.urlAfterRedirects));
     });
   }
 
@@ -38,19 +35,23 @@ export class NavMenuChildItemsComponent {
 
   protected navigateTo(route: string | undefined, anchor?: string): void {
     if (!route) return;
+    const resolvedRoute = this.resolveRoute(route);
     if (!anchor) {
-      this.router.navigateByUrl(route);
+      this.router.navigateByUrl(resolvedRoute);
       return;
     }
-    const currentPath = window?.location?.pathname || "";
-    const navigate = currentPath !== route ? this.router.navigateByUrl(route + "#" + anchor) : Promise.resolve(true);
+    const currentPath = this.normalizeUrl(window?.location?.pathname || "");
+    const navigate = currentPath !== resolvedRoute ? this.router.navigateByUrl(resolvedRoute + "#" + anchor) : Promise.resolve(true);
     navigate.then(() => {
       setTimeout(() => this.viewportScroller.scrollToAnchor(anchor), 0);
     });
   }
 
   protected isActive(node: any): boolean {
-    return !!node?.route && this.currentUrl() === node.route;
+    if (!node?.route) {
+      return false;
+    }
+    return this.matchesRoute(node.route, this.currentUrl());
   }
 
   protected isAncestorActive(node: any): boolean {
@@ -58,10 +59,58 @@ export class NavMenuChildItemsComponent {
     return this.hasDescendantWithRoute(node, this.currentUrl());
   }
 
+  private resolveRoute(route: string): string {
+    const params = this.collectRouteParams();
+    const resolved = this.getSegments(route)
+      .map(segment => {
+        if (!segment.startsWith(":")) {
+          return segment;
+        }
+        const paramName = segment.slice(1);
+        return params[paramName] ?? paramName;
+      })
+      .join("/");
+    return route.startsWith("/") ? `/${resolved}` : resolved;
+  }
+
+  private collectRouteParams(): Record<string, string> {
+    const params: Record<string, string> = {};
+    let route = this.router.routerState.snapshot.root;
+    while (route) {
+      Object.assign(params, route.params);
+      route = route.firstChild!;
+    }
+    return params;
+  }
+
+  private matchesRoute(route: string, currentUrl: string): boolean {
+    const routeSegments = this.getSegments(route);
+    const currentSegments = this.getSegments(currentUrl);
+
+    if (routeSegments.length !== currentSegments.length) {
+      return false;
+    }
+
+    return routeSegments.every((segment, index) => {
+      if (segment.startsWith(":")) {
+        return true;
+      }
+      return segment === currentSegments[index];
+    });
+  }
+
+  private normalizeUrl(url: string): string {
+    return (url || "").split("?")[0].split("#")[0];
+  }
+
+  private getSegments(url: string): string[] {
+    return url.split("/").filter(Boolean);
+  }
+
   private hasDescendantWithRoute(node: any, url: string): boolean {
     if (!node?.children?.length) return false;
     for (const child of node.children) {
-      if (child?.route && child.route === url) return true;
+      if (child?.route && this.matchesRoute(child.route, url)) return true;
       if (child?.children?.length && this.hasDescendantWithRoute(child, url)) return true;
     }
     return false;
