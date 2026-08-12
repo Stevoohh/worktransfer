@@ -2,10 +2,9 @@
 const eslint = require("@eslint/js");
 const angular = require("angular-eslint");
 const tseslint = require("typescript-eslint");
-const olbeslint = require("@olb/eslint-config");
+
 
 module.exports = tseslint.config(
-  ...olbeslint.configs.recommended,
   {
     files: ["**/*.ts"],
     extends: [],
