@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
-import { MenuHeading, MenuItem, OlbUserMenuService } from "@olb/angular-base";
+import { MenuHeading, MenuItem, OlbBannerIconService, OlbUserMenuService } from "@olb/angular-base";
 import appPackageJson from "../../package.json";
 import { AppStateService } from "./app-state.service";
 import { UserInfoComponent } from "./olb-base-demo/user-info/user-info.component";
@@ -17,6 +17,7 @@ export class AppComponent {
   appVersion = appPackageJson.version;
 
   userMenuService = inject(OlbUserMenuService);
+  bannerIconService = inject(OlbBannerIconService);
   appStateService = inject(AppStateService);
 
   readonly menu: (MenuHeading | MenuItem)[] = [
@@ -48,6 +49,12 @@ export class AppComponent {
               anchor: "base-deeplinks"
             }
           ]
+        },
+        {
+          icon: "notifications",
+          route: "/olb-base",
+          label: "Banner-Icons",
+          anchor: "base-banner-icons"
         },
         {
           icon: "route",
@@ -128,5 +135,19 @@ export class AppComponent {
 
   constructor() {
     this.userMenuService.show(UserInfoComponent);
+
+    const homeIconId = this.bannerIconService.add({
+      icon: "home",
+      url: "https://www.olb.de"
+    });
+    this.bannerIconService.add({
+      icon: "help",
+      url: "https://www.olb.de",
+      color: "#ffeb3b"
+    });
+
+    setTimeout(() => {
+      this.bannerIconService.update(homeIconId, { badge: 15, color: "#8de23c" });
+    }, 2500);
   }
 }

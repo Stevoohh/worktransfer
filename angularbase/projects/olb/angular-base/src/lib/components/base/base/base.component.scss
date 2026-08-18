@@ -102,6 +102,21 @@
   line-height: 1.2;
 }
 
+.banner-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px 4px 4px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.banner-icon:hover {
+  background-color: olb-colors.$secondary;
+  border-radius: 20px;
+}
+
 .user-menu-button {
   background: transparent;
   border: 0;

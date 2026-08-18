@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, effect, Inject, inject, input, OnInit, Optional, signal } from "@angular/core";
+import { MatBadgeModule } from "@angular/material/badge";
 import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatMenuModule } from "@angular/material/menu";
@@ -15,6 +16,7 @@ import { Title } from "@angular/platform-browser";
 import moment from "moment";
 import { OLB_BASE_CONFIG_TOKEN, OlbBaseConfig } from "../../../config/olb-base-config";
 import { OlbAuthenticationService } from "../../../services/olb-authentication.service";
+import { OlbBannerIconService } from "../../../services/olb-banner-icon.service";
 import { OlbEnvironmentService } from "../../../services/olb-environment.service";
 import { OlbKordobaEnvironmentService } from "../../../services/olb-kordoba-environment.service";
 import { OlbUserMenuService } from "../../../services/olb-user-menu.service";
@@ -34,6 +36,7 @@ import { NavTreeComponent } from "../navigation/nav-tree/nav-tree.component";
   imports: [
     CommonModule,
     RouterModule,
+    MatBadgeModule,
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
@@ -53,7 +56,7 @@ import { NavTreeComponent } from "../navigation/nav-tree/nav-tree.component";
 })
 export class BaseComponent implements OnInit {
   appVersion = input<string>("n.v.");
-  baseVersion = "22.1.0";
+  baseVersion = "22.3.0";
 
   title = input<string>("App-Name nicht gesetzt");
   logoUrl = input<string>("/assets/images/olb-logo-neg.png");
@@ -66,6 +69,7 @@ export class BaseComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
   private readonly environmentService = inject(OlbEnvironmentService);
   private readonly olbUserMenuService = inject(OlbUserMenuService);
+  protected readonly bannerIconService = inject(OlbBannerIconService);
   // private breakpointObserver: BreakpointObserver,
   // public olbSidebarService: OlbSidebarService,  // denke das braucht man nicht mehr
   public readonly authenticationService = inject(OlbAuthenticationService);

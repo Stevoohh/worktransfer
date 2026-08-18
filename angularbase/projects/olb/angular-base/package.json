@@ -1,6 +1,6 @@
 {
   "name": "@olb/angular-base",
-  "version": "22.1.0",
+  "version": "22.3.0",
   "peerDependencies": {
     "@angular/animations": ">=22.0.0",
     "@angular/cdk": ">=22.0.0",

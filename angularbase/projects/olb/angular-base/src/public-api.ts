@@ -24,6 +24,7 @@ export * from "./lib/services/document/excel-worksheet";
 export * from "./lib/services/document/olb-document.service";
 export * from "./lib/services/document/pdf-data";
 export * from "./lib/services/olb-authentication.service";
+export * from "./lib/services/olb-banner-icon.service";
 export * from "./lib/services/olb-environment";
 export * from "./lib/services/olb-environment.service";
 export * from "./lib/services/olb-error-notification-service";

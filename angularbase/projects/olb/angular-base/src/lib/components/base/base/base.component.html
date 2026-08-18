@@ -25,6 +25,14 @@
         <span class="v-sep">|</span>
       }
 
+      @for (icon of bannerIconService.icons(); track icon.id) {
+        <a class="banner-icon-link" [href]="icon.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="icon.icon">
+          <mat-icon class="banner-icon" [matBadge]="icon.badge ?? ''" [matBadgeHidden]="icon.badge == null || icon.badge === ''" [style.color]="icon.color">
+            {{ icon.icon }}
+          </mat-icon>
+        </a>
+      }
+
       @if (!showCustomUserMenu) {
         <div class="user-texts">
           <span class="user-name">{{ (authenticationService.fullName$ | async) || "Benutzername" }}</span>

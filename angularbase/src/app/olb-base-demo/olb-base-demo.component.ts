@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { Router } from "@angular/router";
+import { OlbBannerIconService } from "@olb/angular-base";
 import { AppStateService } from "../app-state.service";
 
 @Component({
@@ -84,6 +85,20 @@ export class AppComponent {
         ]
       },`;
 
+  bannerIconsTs = `private readonly bannerIconService = inject(OlbBannerIconService);
+
+const mailId = this.bannerIconService.add({
+  icon: "mail",
+  url: "https://www.olb.de"
+});
+
+this.bannerIconService.update(mailId, { badge: 15, color: "#ffcc00" });
+this.bannerIconService.remove(mailId);`;
+
+  private readonly bannerIconService = inject(OlbBannerIconService);
+  private demoIconId: string | null = null;
+  private demoBadgeCount = 0;
+
   constructor(
     private appStateService: AppStateService,
     private router: Router
@@ -91,5 +106,35 @@ export class AppComponent {
 
   openDeeplink() {
     this.router.navigate(["olb-base/deeplink"]);
+  }
+
+  addBannerIcon(): void {
+    this.demoIconId = this.bannerIconService.add({
+      id: "demo-mail",
+      icon: "mail",
+      url: "https://www.olb.de"
+    });
+    this.demoBadgeCount = 0;
+  }
+
+  updateBannerIconBadge(): void {
+    if (!this.demoIconId) {
+      this.addBannerIcon();
+    }
+    this.demoBadgeCount += 1;
+    this.bannerIconService.update("demo-mail", { badge: this.demoBadgeCount });
+  }
+
+  updateBannerIconColor(): void {
+    if (!this.demoIconId) {
+      this.addBannerIcon();
+    }
+    this.bannerIconService.update("demo-mail", { color: "#ff5252" });
+  }
+
+  removeBannerIcon(): void {
+    this.bannerIconService.remove("demo-mail");
+    this.demoIconId = null;
+    this.demoBadgeCount = 0;
   }
 }

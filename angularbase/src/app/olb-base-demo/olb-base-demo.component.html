@@ -47,5 +47,20 @@
 
 <app-code [html]="appVersionHtml" [ts]="appVersionTs" title="OLB Base App Version"></app-code>
 
+<h3 id="base-banner-icons" tabindex="-4">Banner-Icons</h3>
+<mat-divider></mat-divider>
+
+<p>
+  Über den OlbBannerIconService können links neben dem User-Icon beliebig viele Material-Icons ergänzt werden. Jedes Icon erhält einen externen Link, der beim
+  Klick in einem neuen Tab geöffnet wird. Nach dem Hinzufügen lassen sich Badge und Farbe jederzeit ändern, einzelne Icons können wieder entfernt werden.
+</p>
+
+<button mat-raised-button class="deep-link-button" type="button" (click)="addBannerIcon()">Icon hinzufügen</button>
+<button mat-raised-button class="deep-link-button" type="button" (click)="updateBannerIconBadge()">Badge setzen</button>
+<button mat-raised-button class="deep-link-button" type="button" (click)="updateBannerIconColor()">Farbe ändern</button>
+<button mat-raised-button class="deep-link-button" type="button" (click)="removeBannerIcon()">Icon entfernen</button>
+
+<app-code [ts]="bannerIconsTs" title="Banner-Icons"></app-code>
+
 <!-- For easier scrolling at the bottom -->
 <div style="height: 150px"></div>
